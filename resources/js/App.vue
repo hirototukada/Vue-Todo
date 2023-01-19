@@ -1,6 +1,8 @@
 <script setup>
 import Hello from './components/Hello.vue';
 import Header from './components/Header/Header.vue';
+import Home from './components/main/Home.vue';
+import About from './components/main/About.vue';
 </script>
 
 <template>
@@ -16,6 +18,5 @@ import Header from './components/Header/Header.vue';
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
