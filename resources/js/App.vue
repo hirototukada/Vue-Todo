@@ -5,6 +5,7 @@ import Header from './components/Header/Header.vue';
 <template>
 <!-- 遷移先設定 -->
 <Header/>
+ページ定義
 <router-view/>
 </template>
 
