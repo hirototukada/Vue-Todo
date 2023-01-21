@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./components/Page/Home.vue";
 import About from "./components/Page/Login.vue";
+import Todo_add from "./components/Page/Todo/Todo_add.vue";
 
 const routes = [
     { path: "/", redirect: "/home" },
@@ -10,11 +11,12 @@ const routes = [
         component: Home,
         children: [
             {
-                path: "Todo",
-                component: "profile",
+                path: "home",
+                component: "テスト",
             },
         ],
     },
+    { path: "/todoAdd", name: "Todo_add", component: Todo_add },
     { path: "/login", name: "Login", component: About },
 ];
 

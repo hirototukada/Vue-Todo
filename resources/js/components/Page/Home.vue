@@ -1,5 +1,5 @@
 <template>
-    <h1 class="mt-3">Todoリスト！</h1>
+    <h1 class="mt-3">Todo</h1>
     <div class="w-75 m-auto">
         <table class="table">
             <thead>
@@ -45,8 +45,11 @@
         </table>
         <div class="text-right">
             <button type="button" class="mt-4 btn btn-primary">
-                タスクの追加
+                <router-link class="mr-3" to="/todoAdd">
+                    タスクの追加
+                </router-link>
             </button>
         </div>
+        <router-view></router-view>
     </div>
 </template>
