@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Viteのテスト</title>
+    <title>Todo</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
