@@ -2,10 +2,11 @@
     <h1 class="mt-3 text-center">タスク追加パーツ</h1>
     <div class="w-75 m-auto">
         <form>
-            <div class="mb-3 d-flex">
-                <label for="exampleInputEmail1" class="form-label w-25">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">
                     タスク：
                 </label>
+                <p class="text-danger">{{ errors.task }}</p>
                 <input
                     type="text"
                     class="form-control"
@@ -15,7 +16,6 @@
                     @blur="handleTask"
                 />
             </div>
-            <p class="text-danger">{{ errors.task }}</p>
             <div class="mb-3 text-end">
                 <label for="exampleInputPassword1" class="form-label">
                     メモ：
@@ -35,8 +35,9 @@
             <div class="text-right">
                 <button
                     :disabled="!meta.valid"
-                    type="submit"
+                    type="button"
                     class="btn btn-primary text-end"
+                    @click="onSubmit"
                 >
                     追加する
                 </button>
@@ -61,12 +62,22 @@ export default {
             task: string().required("※タスクは必須項目です。"),
         });
         // スチーマー反映結果格納
-        const { errors, meta } = useForm({
+        const { errors, meta, handleSubmit } = useForm({
+            // バリデーション
             validationSchema: schema,
+            // 初期表示
+            initialValues: {
+                task: "",
+                memo: "",
+            },
         });
         // 各インプット格納
         const { value: task, handleChange: handleTask } = useField("task");
         const { value: memo, handleChange: handleMemo } = useField("memo");
+        // 追加クリック処理
+        const onSubmit = handleSubmit((values) => {
+            console.log(values);
+        });
 
         return {
             memo,
@@ -75,6 +86,7 @@ export default {
             meta,
             handleTask,
             handleMemo,
+            onSubmit,
         };
     },
 };
