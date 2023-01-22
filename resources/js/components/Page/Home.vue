@@ -1,5 +1,5 @@
 <template>
-    <h1 class="mt-3">Todo</h1>
+    <h1 class="mt-3 text-center">Todo</h1>
     <div class="w-75 m-auto">
         <table class="table">
             <thead>
@@ -12,14 +12,16 @@
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row">
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                        />
-                    </th>
+                    <td>
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="defaultCheck1"
+                            />
+                        </div>
+                    </td>
                     <td>解約サイト確認メールパーツ</td>
                     <td>1/24まで</td>
                     <td>
@@ -44,11 +46,11 @@
             </tbody>
         </table>
         <div class="text-right">
-            <button type="button" class="mt-4 btn btn-primary">
-                <router-link class="mr-3" to="/todoAdd">
+            <router-link class="mr-3" to="/todoAdd">
+                <button type="button" class="mt-4 btn btn-primary">
                     タスクの追加
-                </router-link>
-            </button>
+                </button>
+            </router-link>
         </div>
         <router-view></router-view>
     </div>
