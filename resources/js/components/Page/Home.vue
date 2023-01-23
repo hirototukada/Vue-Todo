@@ -63,5 +63,14 @@ export default {
         const route = useRoute();
         console.log(route.query);
     },
+    created() {
+        this.hello();
+    },
+    methods: {
+        async hello() {
+            const res = await axios.get("/api/todo");
+            console.log(res);
+        },
+    },
 };
 </script>

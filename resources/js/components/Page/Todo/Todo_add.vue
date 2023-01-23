@@ -18,6 +18,21 @@
             </div>
             <div class="mb-3 text-end">
                 <label for="exampleInputPassword1" class="form-label">
+                    詳細：
+                </label>
+                <p class="text-danger">{{ errors.content }}</p>
+                <div class="form-floating">
+                    <textarea
+                        class="form-control"
+                        v-model="content"
+                        id="content"
+                        style="height: 100px"
+                        @blur="handleContent"
+                    ></textarea>
+                </div>
+            </div>
+            <div class="mb-3 text-end">
+                <label for="exampleInputPassword1" class="form-label">
                     メモ：
                 </label>
                 <p class="text-danger">{{ errors.memo }}</p>
@@ -25,7 +40,7 @@
                     <textarea
                         class="form-control"
                         v-model="memo"
-                        placeholder="～文字以内で入力してください。"
+                        placeholder="備考"
                         id="floatingTextarea"
                         style="height: 100px"
                         @blur="handleMemo"
@@ -64,8 +79,8 @@ export default {
         const router = useRouter();
         // バリデーション一括設定
         const schema = object({
-            memo: string().required("※メモは必須項目です。"),
             task: string().required("※タスクは必須項目です。"),
+            content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
@@ -74,25 +89,30 @@ export default {
             // 初期表示
             initialValues: {
                 task: "",
+                content: "",
                 memo: "",
             },
         });
         // 各インプット格納
         const { value: task, handleChange: handleTask } = useField("task");
-        const { value: memo, handleChange: handleMemo } = useField("memo");
+        const { value: content, handleChange: handleContent } =
+            useField("content");
+        const { value: memo } = useField("memo");
         // 追加クリック処理
         const onSubmit = handleSubmit((values) => {
             console.log(values);
+
             router.push({ path: "/home", query: values });
         });
 
         return {
-            memo,
             task,
+            content,
+            memo,
             errors,
             meta,
             handleTask,
-            handleMemo,
+            handleContent,
             onSubmit,
         };
     },
