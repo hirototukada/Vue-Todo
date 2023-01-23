@@ -44,8 +44,12 @@
             </div>
         </form>
     </div>
+    <!-- 参考 -->
+    <!-- バリデーション結果（初期表示はfalse） -->
     <p>valid:{{ meta.valid }}</p>
+    <!-- 記入されたかどうか（初期表示から入力されたか） -->
     <p>dirty:{{ meta.dirty }}</p>
+    <!-- 初期表示 -->
     <p>initialValue:{{ meta.initialValue }}</p>
 </template>
 
@@ -53,9 +57,11 @@
 // バリデーション用プラグイン
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
+import { useRouter } from "vue-router";
 // テンプレート表示
 export default {
     setup() {
+        const router = useRouter();
         // バリデーション一括設定
         const schema = object({
             memo: string().required("※メモは必須項目です。"),
@@ -77,6 +83,7 @@ export default {
         // 追加クリック処理
         const onSubmit = handleSubmit((values) => {
             console.log(values);
+            router.push({ path: "/home", query: values });
         });
 
         return {
