@@ -19,3 +19,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/todo', [TodoController::class, 'index']);
+Route::post('/todoAdd', [TodoController::class, 'todoAdd']);

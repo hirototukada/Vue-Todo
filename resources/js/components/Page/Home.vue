@@ -69,7 +69,6 @@ export default {
     methods: {
         hello() {
             axios.get("/api/todo").then((res) => {
-                console.log("ttt");
                 console.log(res);
             });
         },

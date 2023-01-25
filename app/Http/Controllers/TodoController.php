@@ -8,4 +8,9 @@ class TodoController extends Controller
     {
         return 'テスト通信';
     }
+
+    public function todoAdd()
+    {
+        return 'test';
+    }
 }

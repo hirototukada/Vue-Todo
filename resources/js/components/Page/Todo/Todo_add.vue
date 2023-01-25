@@ -73,6 +73,7 @@
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
 import { useRouter } from "vue-router";
+import { externalFunc } from "../../../functions/Todo/Todo_model.vue";
 // テンプレート表示
 export default {
     setup() {
@@ -100,8 +101,6 @@ export default {
         const { value: memo } = useField("memo");
         // 追加クリック処理
         const onSubmit = handleSubmit((values) => {
-            console.log(values);
-
             router.push({ path: "/home", query: values });
         });
 
