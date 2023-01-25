@@ -16,6 +16,7 @@
     "dependencies": {
         "bootstrap": "^4.6.2",
         "vee-validate": "^4.5.8",
+        "vue-axios": "^3.5.2",
         "vue-loader": "^17.0.1",
         "vue-router": "^4.1.6",
         "yup": "^0.32.11"

@@ -67,9 +67,11 @@ export default {
         this.hello();
     },
     methods: {
-        async hello() {
-            const res = await axios.get("/api/todo");
-            console.log(res);
+        hello() {
+            axios.get("/api/todo").then((res) => {
+                console.log("ttt");
+                console.log(res);
+            });
         },
     },
 };
