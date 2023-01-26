@@ -22,9 +22,9 @@ class Todo extends Model
             DB::beginTransaction();
 
             Todo::create([
-                'user_id' => $addTodoData['user_id'],
-                'postal_code' => $addTodoData['postal_code'],
-                'pref_id' => $addTodoData['pref_id'],
+                'task' => $addTodoData['task'],
+                'content' => $addTodoData['content'],
+                'memo' => $addTodoData['memo'],
             ]);
 
             DB::commit();
