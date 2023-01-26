@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\TodoController;
+use App\Http\Controllers\Todo\TodoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +19,5 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/todo', [TodoController::class, 'index']);
+// todoインサート
 Route::post('/todoAdd', [TodoController::class, 'todoAdd']);
