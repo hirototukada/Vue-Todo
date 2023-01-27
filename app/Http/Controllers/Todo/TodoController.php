@@ -34,6 +34,6 @@ class TodoController extends Controller
         // 登録処理
         $response = $this->todo->store($request);
 
-        return 'test';
+        return $response;
     }
 }

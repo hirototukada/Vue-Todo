@@ -2,13 +2,22 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Todo extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'task',
+        'content',
+        'memo',
+    ];
 
     /**
      *  登録処理
@@ -18,6 +27,7 @@ class Todo extends Model
      */
     public function store($addTodoData)
     {
+        logger('test');
         try {
             DB::beginTransaction();
 
@@ -28,7 +38,8 @@ class Todo extends Model
             ]);
 
             DB::commit();
-        } catch (\Throwable$th) {
+        } catch (Exception $e) {
+            Log::error($e);
             DB::rollBack();
         }
     }
