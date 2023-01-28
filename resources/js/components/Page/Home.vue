@@ -58,23 +58,22 @@
 
 <script>
 import { useRoute } from "vue-router";
+import { ref } from "@vue/runtime-core";
+
 export default {
     setup() {
         const route = useRoute();
-        console.log(route.query);
     },
-    created() {
-        this.getTodo();
-    },
-    methods: {
-        async getTodo() {
-            await axios
-                .get("/api/todo")
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch();
-        },
+    async mounted() {
+        //todoデータ格納
+        let showTodoList = ref();
+        await axios
+            .get("/api/todo")
+            .then((res) => {
+                showTodoList = res;
+                console.log(showTodoList);
+            })
+            .catch();
     },
 };
 </script>
