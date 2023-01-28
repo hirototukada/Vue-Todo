@@ -83,7 +83,6 @@
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
 import { useRouter } from "vue-router";
-import { insertTodo } from "../../../functions/Todo/Todo_model.vue";
 import Modal from "../../Modal/Modal.vue";
 import { defineComponent, ref } from "@vue/runtime-core";
 

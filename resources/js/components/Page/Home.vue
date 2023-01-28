@@ -64,13 +64,16 @@ export default {
         console.log(route.query);
     },
     created() {
-        this.hello();
+        this.getTodo();
     },
     methods: {
-        hello() {
-            axios.get("/api/todo").then((res) => {
-                console.log(res);
-            });
+        async getTodo() {
+            await axios
+                .get("/api/todo")
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch();
         },
     },
 };

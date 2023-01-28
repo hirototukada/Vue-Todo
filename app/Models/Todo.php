@@ -20,6 +20,22 @@ class Todo extends Model
     ];
 
     /**
+     * データ取得処理
+     *
+     * @param array $addTodoData
+     * @return array $todoParam
+     */
+    public function getData(): array
+    {
+        logger('取得処理始まり');
+
+        $todoParam = Todo::get()->toArray();
+        logger(gettype($todoParam));
+
+        return $todoParam;
+    }
+
+    /**
      *  登録処理
      *
      * @param array $addTodoData

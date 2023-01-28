@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TodoAddRequest;
 use App\Models\Todo;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 
 class TodoController extends Controller
 {
@@ -18,9 +17,18 @@ class TodoController extends Controller
         $this->user = $user;
         $this->todo = $todo;
     }
-    public function index(): string
+
+    /**
+     * 取得処理
+     *
+     * @return array
+     */
+    public function index(): array
     {
-        return 'テスト通信';
+        // Todoタスク取得処理
+        $todoParam = $this->todo->getData();
+
+        return $todoParam;
     }
     /**
      * 新規登録処理
@@ -30,7 +38,6 @@ class TodoController extends Controller
      */
     public function todoAdd(TodoAddRequest $request)
     {
-        Log::info('This is info Logging.');
         // 登録処理
         $response = $this->todo->store($request);
 
