@@ -2,7 +2,7 @@
     <div class="modal-dialog w-100">
         <div class="modal-content">
             <div class="modal-body">
-                <p>{{ error1 }}</p>
+                <p>error</p>
             </div>
             <div class="modal-footer">
                 <button

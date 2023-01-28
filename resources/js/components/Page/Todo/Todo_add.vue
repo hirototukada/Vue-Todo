@@ -126,11 +126,11 @@ export default {
                 })
                 .then((response) => {
                     response.data;
-                    router.push({ path: "/home", query: values });
+                    return router.push({ path: "/home", query: values });
                 })
                 .catch((err) => {
                     let errorText = err.response.data.errors;
-                    openModal(errorText);
+                    return openModal(errorText);
                 });
             // 結果表示
         });
