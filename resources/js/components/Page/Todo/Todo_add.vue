@@ -1,6 +1,10 @@
 <template>
     <transition name="fade">
-        <Modal v-if="showContent" :name="12" v-on:close="closeModal()"></Modal>
+        <Modal
+            v-if="showContent"
+            :name="errorMsg"
+            v-on:close="closeModal()"
+        ></Modal>
     </transition>
     <h1 class="mt-3 text-center">タスク追加パーツ</h1>
     <div class="w-75 m-auto">

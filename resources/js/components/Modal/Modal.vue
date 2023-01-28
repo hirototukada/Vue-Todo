@@ -2,7 +2,7 @@
     <div class="modal-dialog w-100">
         <div class="modal-content">
             <div class="modal-body">
-                <p>error</p>
+                <p>{{ name }}</p>
             </div>
             <div class="modal-footer">
                 <button
@@ -34,5 +34,6 @@ export default defineComponent({
             closeModal,
         };
     },
+    props: ["name"],
 });
 </script>

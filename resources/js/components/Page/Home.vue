@@ -23,7 +23,7 @@
                         </div>
                     </td>
                     <td>解約サイト確認メールパーツ</td>
-                    <td>1/24まで</td>
+                    <td>{{ showTodoList[0] }}</td>
                     <td>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -64,14 +64,17 @@ export default {
     setup() {
         const route = useRoute();
     },
+    data: function () {
+        return {
+            showTodoList: {},
+        };
+    },
     async mounted() {
-        //todoデータ格納
-        let showTodoList = ref();
         await axios
             .get("/api/todo")
             .then((res) => {
-                showTodoList = res;
-                console.log(showTodoList);
+                this.showTodoList = res.data;
+                console.log(this.showTodoList);
             })
             .catch();
     },
