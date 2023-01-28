@@ -1,7 +1,11 @@
 <template>
+    <transition name="fade">
+        <Modal v-if="showContent" :name="12" v-on:close="closeModal()"></Modal>
+    </transition>
     <h1 class="mt-3 text-center">タスク追加パーツ</h1>
     <div class="w-75 m-auto">
         <form>
+            <!-- タスク -->
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">
                     タスク：
@@ -16,6 +20,8 @@
                     @blur="handleTask"
                 />
             </div>
+            <!-- タスク -->
+            <!-- 詳細 -->
             <div class="mb-3 text-end">
                 <label for="exampleInputPassword1" class="form-label">
                     詳細：
@@ -31,6 +37,8 @@
                     ></textarea>
                 </div>
             </div>
+            <!-- 詳細 -->
+            <!-- メモ -->
             <div class="mb-3 text-end">
                 <label for="exampleInputPassword1" class="form-label">
                     メモ：
@@ -47,6 +55,8 @@
                     ></textarea>
                 </div>
             </div>
+            <!-- メモ -->
+            <!-- 追加ボタン -->
             <div class="text-right">
                 <button
                     :disabled="!meta.valid"
@@ -74,13 +84,20 @@ import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
 import { useRouter } from "vue-router";
 import { insertTodo } from "../../../functions/Todo/Todo_model.vue";
+import Modal from "../../Modal/Modal.vue";
+import { defineComponent, ref } from "@vue/runtime-core";
+
 // テンプレート表示
 export default {
+    components: {
+        Modal,
+    },
     setup() {
         const router = useRouter();
+        const serverError = "";
         // バリデーション一括設定
         const schema = object({
-            task: string().required("※タスクは必須項目です。"),
+            // task: string().required("※タスクは必須項目です。"),
             content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
@@ -100,13 +117,38 @@ export default {
             useField("content");
         const { value: memo } = useField("memo");
         // 追加クリック処理
-        const onSubmit = handleSubmit((values) => {
+        const onSubmit = handleSubmit(async (todoParam) => {
             // 新規登録処理
-            const res = insertTodo(values);
+            await axios
+                .post("api/todoAdd", {
+                    task: todoParam["task"],
+                    content: todoParam["content"],
+                    memo: todoParam["memo"],
+                })
+                .then((response) => {
+                    response.data;
+                    router.push({ path: "/home", query: values });
+                })
+                .catch((err) => {
+                    let errorText = err.response.data.errors;
+                    openModal(errorText);
+                });
             // 結果表示
-            console.log(res);
-            router.push({ path: "/home", query: values });
         });
+
+        //モーダルクリックチェック
+        let showContent = ref(false);
+        // エラーメッセージ格納
+        let errorMsg = ref("");
+        // モーダルウィンドウを表示する.
+        let openModal = (errorText) => {
+            showContent.value = true;
+            errorMsg.value = errorText;
+        };
+        //  モーダルウィンドを閉じる.
+        let closeModal = () => {
+            showContent.value = false;
+        };
 
         return {
             task,
@@ -114,9 +156,14 @@ export default {
             memo,
             errors,
             meta,
+            serverError,
             handleTask,
             handleContent,
             onSubmit,
+            showContent,
+            openModal,
+            closeModal,
+            errorMsg,
         };
     },
 };
