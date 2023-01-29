@@ -2,7 +2,7 @@
     <transition name="fade">
         <Modal
             v-if="showContent"
-            :name="errorMsg"
+            :errorMsg="errorMsg"
             v-on:close="closeModal()"
         ></Modal>
     </transition>
@@ -101,7 +101,7 @@ export default {
         // バリデーション一括設定
         const schema = object({
             // task: string().required("※タスクは必須項目です。"),
-            content: string().required("※詳細は必須項目です。"),
+            // content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
@@ -130,10 +130,10 @@ export default {
                 })
                 .then((response) => {
                     response.data;
-                    return router.push({ path: "/home", query: values });
+                    return router.push({ path: "/home", query: response });
                 })
                 .catch((err) => {
-                    let errorText = err.response.data.errors;
+                    let errorText = err.response.data.message;
                     return openModal(errorText);
                 });
             // 結果表示
@@ -142,7 +142,7 @@ export default {
         //モーダルクリックチェック
         let showContent = ref(false);
         // エラーメッセージ格納
-        let errorMsg = ref("");
+        let errorMsg = ref();
         // モーダルウィンドウを表示する.
         let openModal = (errorText) => {
             showContent.value = true;

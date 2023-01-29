@@ -7,25 +7,8 @@
                     <th scope="col">完了チェック</th>
                     <th scope="col">タスク</th>
                     <th scope="col">メモ</th>
-                    <th scope="col">備考</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="form-check">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="defaultCheck1"
-                            />
-                        </div>
-                    </td>
-                    <td>解約サイト確認メールパーツ</td>
-                    <td>{{ showTodoList[0] }}</td>
-                    <td>
-                        <svg
+                    <th scope="col">
+                        備考<svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
                             height="16"
@@ -41,7 +24,27 @@
                                 d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
                             />
                         </svg>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    v-for="showTodoList in showTodoLists"
+                    :key="showTodoList.id"
+                >
+                    <td>
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="defaultCheck1"
+                            />
+                        </div>
                     </td>
+                    <td>{{ showTodoList.task }}</td>
+                    <td>{{ showTodoList.memo }}</td>
+                    <td>{{ showTodoList.content }}</td>
                 </tr>
             </tbody>
         </table>
@@ -58,25 +61,25 @@
 
 <script>
 import { useRoute } from "vue-router";
-import { ref } from "@vue/runtime-core";
+import { ref, onMounted } from "vue";
 
 export default {
     setup() {
         const route = useRoute();
-    },
-    data: function () {
+        const showTodoLists = ref();
+        onMounted(async () => {
+            await axios
+                .get("/api/todo")
+                .then((res) => {
+                    showTodoLists.value = res.data;
+                    console.log(showTodoLists.value);
+                })
+                .catch();
+        });
+
         return {
-            showTodoList: {},
+            showTodoLists,
         };
-    },
-    async mounted() {
-        await axios
-            .get("/api/todo")
-            .then((res) => {
-                this.showTodoList = res.data;
-                console.log(this.showTodoList);
-            })
-            .catch();
     },
 };
 </script>
