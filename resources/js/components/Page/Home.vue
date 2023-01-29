@@ -1,4 +1,11 @@
 <template>
+    <transition name="fade">
+        <Modal
+            v-if="showContent"
+            :errorMsg="errorMsg"
+            v-on:close="closeModal()"
+        ></Modal>
+    </transition>
     <h1 class="mt-3 text-center">Todo</h1>
     <div class="w-75 m-auto">
         <table class="table">
@@ -62,23 +69,48 @@
 <script>
 import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
+import Modal from "../Modal/Modal.vue";
 
 export default {
+    components: {
+        Modal,
+    },
     setup() {
         const route = useRoute();
         const showTodoLists = ref();
+        // 読み込みのタイミングで取得処理
         onMounted(async () => {
             await axios
                 .get("/api/todo")
                 .then((res) => {
                     showTodoLists.value = res.data;
-                    console.log(showTodoLists.value);
                 })
-                .catch();
+                .catch((err) => {
+                    let errorText = err.response.data.message;
+                    return openModal(errorText);
+                });
         });
+
+        //モーダルクリックチェック
+        let showContent = ref(false);
+        // エラーメッセージ格納
+        let errorMsg = ref();
+        // モーダルウィンドウを表示する.
+        let openModal = (errorText) => {
+            showContent.value = true;
+            errorMsg.value = errorText;
+        };
+        //  モーダルウィンドを閉じる.
+        let closeModal = () => {
+            showContent.value = false;
+        };
 
         return {
             showTodoLists,
+            showContent,
+            openModal,
+            closeModal,
+            errorMsg,
         };
     },
 };
