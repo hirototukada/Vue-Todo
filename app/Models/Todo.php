@@ -59,5 +59,4 @@ class Todo extends Model
             DB::rollBack();
         }
     }
-
 }
