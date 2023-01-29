@@ -43,7 +43,7 @@ class Todo extends Model
      */
     public function store($addTodoData)
     {
-        logger('testd');
+        logger('test');
         try {
             DB::beginTransaction();
 
