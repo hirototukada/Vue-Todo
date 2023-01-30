@@ -6,7 +6,7 @@
             v-on:close="closeModal()"
         ></Modal>
     </transition>
-    <h1 class="mt-3 text-center">タスク追加パーツ</h1>
+    <h1 class="mt-3 text-center">Todo編集</h1>
     <div class="w-75 m-auto">
         <form>
             <!-- タスク -->
@@ -20,6 +20,7 @@
                     class="form-control"
                     id="task"
                     v-model="task"
+                    :v-show="todoList"
                     aria-describedby="taskHelp"
                     @blur="handleTask"
                 />
@@ -73,22 +74,15 @@
             </div>
         </form>
     </div>
-    <!-- 参考 -->
-    <!-- バリデーション結果（初期表示はfalse） -->
-    <p>valid:{{ meta.valid }}</p>
-    <!-- 記入されたかどうか（初期表示から入力されたか） -->
-    <p>dirty:{{ meta.dirty }}</p>
-    <!-- 初期表示 -->
-    <p>initialValue:{{ meta.initialValue }}</p>
 </template>
 
 <script>
 // バリデーション用プラグイン
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
-import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
-import { defineComponent, ref } from "@vue/runtime-core";
+import { ref, onMounted, onBeforeMount } from "vue";
 
 // テンプレート表示
 export default {
@@ -96,7 +90,23 @@ export default {
         Modal,
     },
     setup() {
-        const router = useRouter();
+        const router = useRoute();
+        const todoId = ref(router.params.id);
+        const todoList = ref();
+
+        // 読み込みのタイミングで取得処理
+        onBeforeMount(async () => {
+            await axios
+                .get("/api/editSearch/" + todoId.value)
+                .then((res) => {
+                    todoList.value = res.data;
+                })
+                .catch((err) => {
+                    let errorText = err.response.data.message;
+                    return openModal(errorText);
+                });
+        });
+
         const serverError = "";
         // バリデーション一括設定
         const schema = object({
@@ -109,9 +119,9 @@ export default {
             validationSchema: schema,
             // 初期表示
             initialValues: {
-                task: "",
-                content: "",
-                memo: "",
+                task: todoList,
+                content: todoList.content,
+                memo: todoList.value,
             },
         });
         // 各インプット格納
@@ -167,6 +177,7 @@ export default {
             openModal,
             closeModal,
             errorMsg,
+            todoList,
         };
     },
 };

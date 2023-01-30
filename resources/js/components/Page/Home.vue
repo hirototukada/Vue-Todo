@@ -55,10 +55,8 @@
                     <td>{{ showTodoList.memo }}</td>
                     <td>{{ showTodoList.content }}</td>
                     <td>
-                        <router-link class="mr-3" to="/todoAdd">
-                            <button type="button" class="mt-4 btn btn-primary">
-                                タスクの追加
-                            </button>
+                        <router-link class="mr-3" to="/todoEdit/1">
+                            編集
                         </router-link>
                     </td>
                 </tr>

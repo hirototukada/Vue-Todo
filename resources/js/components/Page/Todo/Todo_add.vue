@@ -73,13 +73,6 @@
             </div>
         </form>
     </div>
-    <!-- 参考 -->
-    <!-- バリデーション結果（初期表示はfalse） -->
-    <p>valid:{{ meta.valid }}</p>
-    <!-- 記入されたかどうか（初期表示から入力されたか） -->
-    <p>dirty:{{ meta.dirty }}</p>
-    <!-- 初期表示 -->
-    <p>initialValue:{{ meta.initialValue }}</p>
 </template>
 
 <script>
@@ -100,8 +93,8 @@ export default {
         const serverError = "";
         // バリデーション一括設定
         const schema = object({
-            // task: string().required("※タスクは必須項目です。"),
-            // content: string().required("※詳細は必須項目です。"),
+            task: string().required("※タスクは必須項目です。"),
+            content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
