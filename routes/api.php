@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
+// Todo取得
 Route::get('/todo', [TodoController::class, 'index']);
+Route::get('/editSearch/{id}', [TodoController::class, 'searchEditData']);
 // todoインサート
 Route::post('/todoAdd', [TodoController::class, 'todoAdd']);

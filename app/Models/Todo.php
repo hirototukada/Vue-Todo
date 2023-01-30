@@ -22,7 +22,6 @@ class Todo extends Model
     /**
      * データ取得処理
      *
-     * @param array $addTodoData
      * @return array $todoParam
      */
     public function getData(): array
@@ -33,6 +32,22 @@ class Todo extends Model
         logger(gettype($todoParam));
 
         return $todoParam;
+    }
+
+    /**
+     * データ取得処理
+     *
+     * @param int $id
+     * @return array $todoParam
+     */
+    public function getEditData($id): array
+    {
+        logger('編集取得処理スタート');
+
+        $todoParam = Todo::get()->where('id', $id)->toArray();
+
+        return $todoParam;
+
     }
 
     /**

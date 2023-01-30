@@ -18,7 +18,7 @@ const routes = [
         ],
     },
     { path: "/todoAdd", name: "Todo_add", component: Todo_add },
-    { path: "/todoEdit", name: "Todo_edit", component: Todo_edit },
+    { path: "/todoEdit/:id", name: "Todo_edit", component: Todo_edit },
     { path: "/login", name: "Login", component: About },
 ];
 

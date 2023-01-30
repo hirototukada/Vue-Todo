@@ -25,11 +25,25 @@ class TodoController extends Controller
      */
     public function index(): array
     {
-        // Todoタスク取得処理
+        // Todo取得処理
         $todoParam = $this->todo->getData();
 
         return $todoParam;
     }
+    /**
+     * id値から取得処理
+     *
+     * @param int $id
+     * @return array
+     */
+    public function searchEditData($id)
+    {
+        // Todo取得処理
+        $todoParam = $this->todo->getEditData($id);
+
+        return $todoParam;
+    }
+
     /**
      * 新規登録処理
      *
