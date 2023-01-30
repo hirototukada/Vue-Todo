@@ -47,7 +47,6 @@ class Todo extends Model
         $todoParam = Todo::get()->where('id', $id)->toArray();
 
         return $todoParam;
-
     }
 
     /**
