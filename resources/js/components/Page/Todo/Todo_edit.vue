@@ -9,6 +9,7 @@
     <h1 class="mt-3 text-center">Todo編集</h1>
     <div class="w-75 m-auto">
         <form>
+            <!-- <input type="hidden" id="task" v-model="id" :v-value="todoId" /> -->
             <!-- タスク -->
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">
@@ -133,7 +134,8 @@ export default {
         const onSubmit = handleSubmit(async (todoParam) => {
             // 新規登録処理
             await axios
-                .post("api/todoAdd", {
+                .post("/api/todoEdit", {
+                    id: todoId,
                     task: todoParam["task"],
                     content: todoParam["content"],
                     memo: todoParam["memo"],
@@ -178,6 +180,7 @@ export default {
             closeModal,
             errorMsg,
             todoList,
+            todoId,
         };
     },
 };

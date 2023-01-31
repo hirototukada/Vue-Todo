@@ -22,3 +22,4 @@ Route::get('/todo', [TodoController::class, 'index']);
 Route::get('/editSearch/{id}', [TodoController::class, 'searchEditData']);
 // todoインサート
 Route::post('/todoAdd', [TodoController::class, 'todoAdd']);
+Route::post('/todoEdit', [TodoController::class, 'todoEdit']);

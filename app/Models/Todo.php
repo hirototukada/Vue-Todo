@@ -29,7 +29,6 @@ class Todo extends Model
         logger('取得処理始まり');
 
         $todoParam = Todo::get()->toArray();
-        logger(gettype($todoParam));
 
         return $todoParam;
     }
@@ -72,5 +71,33 @@ class Todo extends Model
             Log::error($e);
             DB::rollBack();
         }
+    }
+
+    /**
+     *  編集処理
+     *
+     * @param array $editTodoData
+     * @return
+     */
+    public function updateData($editTodoData)
+    {
+        logger('editスタート');
+        logger($editTodoData);
+        // $todoData = Todo::find($editTodoData->id);
+
+        // try {
+        //     DB::beginTransaction();
+
+        //     Todo::create([
+        //         'task' => $editTodoData['task'],
+        //         'content' => $editTodoData['content'],
+        //         'memo' => $editTodoData['memo'],
+        //     ]);
+
+        //     DB::commit();
+        // } catch (Exception $e) {
+        //     Log::error($e);
+        //     DB::rollBack();
+        // }
     }
 }
