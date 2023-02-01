@@ -81,23 +81,19 @@ class Todo extends Model
      */
     public function updateData($editTodoData)
     {
-        logger('editスタート');
-        logger($editTodoData);
-        // $todoData = Todo::find($editTodoData->id);
+        $todoData = Todo::find($editTodoData['id']);
+        try {
+            DB::beginTransaction();
 
-        // try {
-        //     DB::beginTransaction();
+            $todoData->task    = $editTodoData['task'];
+            $todoData->content = $editTodoData['content'];
+            $todoData->memo    = $editTodoData['memo'];
 
-        //     Todo::create([
-        //         'task' => $editTodoData['task'],
-        //         'content' => $editTodoData['content'],
-        //         'memo' => $editTodoData['memo'],
-        //     ]);
-
-        //     DB::commit();
-        // } catch (Exception $e) {
-        //     Log::error($e);
-        //     DB::rollBack();
-        // }
+            $todoData->save();
+            DB::commit();
+        } catch (Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+        }
     }
 }

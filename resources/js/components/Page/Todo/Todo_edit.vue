@@ -21,7 +21,6 @@
                     class="form-control"
                     id="task"
                     v-model="task"
-                    :v-show="todoList"
                     aria-describedby="taskHelp"
                     @blur="handleTask"
                 />
@@ -111,19 +110,13 @@ export default {
         const serverError = "";
         // バリデーション一括設定
         const schema = object({
-            // task: string().required("※タスクは必須項目です。"),
-            // content: string().required("※詳細は必須項目です。"),
+            task: string().required("※タスクは必須項目です。"),
+            content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
             // バリデーション
             validationSchema: schema,
-            // 初期表示
-            initialValues: {
-                task: todoList,
-                content: todoList.content,
-                memo: todoList.value,
-            },
         });
         // 各インプット格納
         const { value: task, handleChange: handleTask } = useField("task");
@@ -135,16 +128,18 @@ export default {
             // 新規登録処理
             await axios
                 .post("/api/todoEdit", {
-                    id: todoId,
+                    id: todoId.value,
                     task: todoParam["task"],
                     content: todoParam["content"],
                     memo: todoParam["memo"],
                 })
                 .then((response) => {
+                    console.log("成功");
                     response.data;
                     return router.push({ path: "/home", query: response });
                 })
                 .catch((err) => {
+                    console.log("失敗");
                     let errorText = err.response.data.message;
                     return openModal(errorText);
                 });
