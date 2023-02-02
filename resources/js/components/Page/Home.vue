@@ -96,11 +96,21 @@ export default {
                     showTodoLists.value = res.data;
                 })
                 .catch((err) => {
-                    let errorText = err.response.data.message;
+                    let errorText = "";
+                    switch (err.response.status) {
+                        case 422:
+                            errorText = err.response.data.message;
+                            break;
+
+                        default:
+                            errorText =
+                                "サーバーエラーです。時間をおいてアクセスしてください。";
+                            break;
+                    }
                     return openModal(errorText);
                 });
         });
-
+        // 渡す用
         const getEditData = async (id) => {
             await axios
                 .get("/api/editSearch/" + id)
@@ -113,8 +123,17 @@ export default {
                     });
                 })
                 .catch((err) => {
-                    console.log(err);
-                    let errorText = err.response.data.message;
+                    let errorText = "";
+                    switch (err.response.status) {
+                        case 422:
+                            errorText = err.response.data.message;
+                            break;
+
+                        default:
+                            errorText =
+                                "サーバーエラーです。時間をおいてアクセスしてください。";
+                            break;
+                    }
                     return openModal(errorText);
                 });
         };

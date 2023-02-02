@@ -99,7 +99,7 @@ export default {
         // 編集データセット
         const formValues = {
             task: route.query.task,
-            content: route.path.content,
+            content: route.query.content,
             memo: route.query.memo,
         };
 
@@ -126,7 +126,7 @@ export default {
             // 新規登録処理
             await axios
                 .post("/api/todoEdit", {
-                    id: todoId.value,
+                    id: todoId,
                     task: todoParam["task"],
                     content: todoParam["content"],
                     memo: todoParam["memo"],
@@ -137,11 +137,20 @@ export default {
                     router.push({ path: "/" });
                 })
                 .catch((err) => {
-                    console.log(err);
-                    let errorText = err.response.data.message;
+                    let errorText = "";
+                    switch (err.response.status) {
+                        case 422:
+                            errorText = err.response.data.message;
+                            break;
+
+                        default:
+                            errorText =
+                                "サーバーエラーです。時間をおいてアクセスしてください。";
+                            break;
+                    }
+
                     return openModal(errorText);
                 });
-            // 結果表示
         });
 
         //モーダルクリックチェック
