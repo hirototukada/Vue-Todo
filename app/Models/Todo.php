@@ -43,7 +43,7 @@ class Todo extends Model
     {
         logger('編集取得処理スタート');
 
-        $todoParam = Todo::get()->where('id', $id)->toArray();
+        $todoParam = Todo::get()->where('id', $id)->first()->toArray();
 
         return $todoParam;
     }
