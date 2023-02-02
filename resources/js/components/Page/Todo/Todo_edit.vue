@@ -61,16 +61,28 @@
                 </div>
             </div>
             <!-- メモ -->
-            <!-- 追加ボタン -->
-            <div class="text-right">
-                <button
-                    :disabled="!meta.valid"
-                    type="button"
-                    class="btn btn-primary text-end"
-                    @click="onSubmit"
-                >
-                    追加する
-                </button>
+            <div class="d-flex">
+                <!-- 削除ボタン -->
+                <div class="text-right">
+                    <button
+                        type="button"
+                        class="btn btn-danger text-end"
+                        @click="onDelete"
+                    >
+                        削除する
+                    </button>
+                </div>
+                <!-- 更新ボタン -->
+                <div class="text-right">
+                    <button
+                        :disabled="!meta.valid"
+                        type="button"
+                        class="btn btn-primary text-end"
+                        @click="onSubmit"
+                    >
+                        更新する
+                    </button>
+                </div>
             </div>
         </form>
     </div>
@@ -83,6 +95,7 @@ import { object, string } from "yup";
 import { useRoute, useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
+import deleteData from "../../../functions/Todo/Todo_model.js";
 
 // テンプレート表示
 export default {
@@ -121,7 +134,7 @@ export default {
         const { value: content, handleChange: handleContent } =
             useField("content");
         const { value: memo } = useField("memo");
-        // 追加クリック処理
+        // 更新クリック処理
         const onSubmit = handleSubmit(async (todoParam) => {
             // 新規登録処理
             await axios
@@ -152,6 +165,10 @@ export default {
                     return openModal(errorText);
                 });
         });
+        // 削除処理
+        const onDelete = () => {
+            return deleteData();
+        };
 
         //モーダルクリックチェック
         let showContent = ref(false);
@@ -183,6 +200,8 @@ export default {
             errorMsg,
             todoList,
             todoId,
+            onDelete,
+            deleteData,
         };
     },
 };

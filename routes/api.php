@@ -23,3 +23,5 @@ Route::get('/editSearch/{id}', [TodoController::class, 'searchEditData']);
 // todoインサート
 Route::post('/todoAdd', [TodoController::class, 'todoAdd']);
 Route::post('/todoEdit', [TodoController::class, 'todoEdit']);
+// Todo削除
+Route::delete('/todoDelete', [TodoController::class, 'todoDelete']);

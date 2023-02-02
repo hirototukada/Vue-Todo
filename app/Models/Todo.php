@@ -5,6 +5,7 @@ namespace App\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 class Todo extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'task',
@@ -95,5 +97,17 @@ class Todo extends Model
             Log::error($e);
             DB::rollBack();
         }
+    }
+
+    /**
+     *  削除処理
+     *
+     * @param int $id
+     * @return
+     */
+    public function deleteData($id)
+    {
+        logger('削除処理スタート');
+        $todoData = Todo::where('id', $id)->delete();
     }
 }
