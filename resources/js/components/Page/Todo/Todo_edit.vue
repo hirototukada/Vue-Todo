@@ -9,6 +9,7 @@
     <h1 class="mt-3 text-center">Todo編集</h1>
     <div class="w-75 m-auto">
         <form>
+            <!-- <input type="hidden" id="task" v-model="id" :v-value="todoId" /> -->
             <!-- タスク -->
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">
@@ -20,7 +21,6 @@
                     class="form-control"
                     id="task"
                     v-model="task"
-                    :v-show="todoList"
                     aria-describedby="taskHelp"
                     @blur="handleTask"
                 />
@@ -80,7 +80,7 @@
 // バリデーション用プラグイン
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
 
@@ -90,27 +90,23 @@ export default {
         Modal,
     },
     setup() {
-        const router = useRoute();
-        const todoId = ref(router.params.id);
+        const route = useRoute();
+        const router = useRouter();
+        console.log(route.query.id);
+        const todoId = route.query.id;
         const todoList = ref();
 
-        // 読み込みのタイミングで取得処理
-        onBeforeMount(async () => {
-            await axios
-                .get("/api/editSearch/" + todoId.value)
-                .then((res) => {
-                    todoList.value = res.data;
-                })
-                .catch((err) => {
-                    let errorText = err.response.data.message;
-                    return openModal(errorText);
-                });
-        });
+        // 編集データセット
+        const formValues = {
+            task: route.query.task,
+            content: route.path.content,
+            memo: route.query.memo,
+        };
 
         const serverError = "";
         // バリデーション一括設定
         const schema = object({
-            // task: string().required("※タスクは必須項目です。"),
+            task: string().required("※タスクは必須項目です。"),
             // content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
@@ -118,11 +114,7 @@ export default {
             // バリデーション
             validationSchema: schema,
             // 初期表示
-            initialValues: {
-                task: todoList,
-                content: todoList.content,
-                memo: todoList.value,
-            },
+            initialValues: formValues,
         });
         // 各インプット格納
         const { value: task, handleChange: handleTask } = useField("task");
@@ -133,16 +125,19 @@ export default {
         const onSubmit = handleSubmit(async (todoParam) => {
             // 新規登録処理
             await axios
-                .post("api/todoAdd", {
+                .post("/api/todoEdit", {
+                    id: todoId.value,
                     task: todoParam["task"],
                     content: todoParam["content"],
                     memo: todoParam["memo"],
                 })
                 .then((response) => {
+                    console.log(response);
                     response.data;
-                    return router.push({ path: "/home", query: response });
+                    router.push({ path: "/" });
                 })
                 .catch((err) => {
+                    console.log(err);
                     let errorText = err.response.data.message;
                     return openModal(errorText);
                 });
@@ -178,6 +173,7 @@ export default {
             closeModal,
             errorMsg,
             todoList,
+            todoId,
         };
     },
 };

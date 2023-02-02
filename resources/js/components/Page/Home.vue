@@ -55,9 +55,12 @@
                     <td>{{ showTodoList.memo }}</td>
                     <td>{{ showTodoList.content }}</td>
                     <td>
-                        <router-link class="mr-3" to="/todoEdit/1">
+                        <p
+                            class="link"
+                            v-on:click="getEditData(showTodoList.id)"
+                        >
                             編集
-                        </router-link>
+                        </p>
                     </td>
                 </tr>
             </tbody>
@@ -73,7 +76,7 @@
 </template>
 
 <script>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import Modal from "../Modal/Modal.vue";
 
@@ -83,6 +86,7 @@ export default {
     },
     setup() {
         const route = useRoute();
+        const router = useRouter();
         const showTodoLists = ref();
         // 読み込みのタイミングで取得処理
         onMounted(async () => {
@@ -96,6 +100,24 @@ export default {
                     return openModal(errorText);
                 });
         });
+
+        const getEditData = async (id) => {
+            await axios
+                .get("/api/editSearch/" + id)
+                .then((res) => {
+                    console.log("成功（取得）");
+                    console.log(res.data);
+                    return router.push({
+                        name: "Todo_edit",
+                        query: res.data,
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    let errorText = err.response.data.message;
+                    return openModal(errorText);
+                });
+        };
 
         //モーダルクリックチェック
         let showContent = ref(false);
@@ -117,7 +139,14 @@ export default {
             openModal,
             closeModal,
             errorMsg,
+            getEditData,
         };
     },
 };
 </script>
+<style>
+.link {
+    color: #007bff;
+    cursor: pointer;
+}
+</style>
