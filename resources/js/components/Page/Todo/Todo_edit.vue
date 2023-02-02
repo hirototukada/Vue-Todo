@@ -80,7 +80,7 @@
 // バリデーション用プラグイン
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
 
@@ -90,33 +90,31 @@ export default {
         Modal,
     },
     setup() {
-        const router = useRoute();
-        const todoId = ref(router.params.id);
+        const route = useRoute();
+        const router = useRouter();
+        console.log(route.query.id);
+        const todoId = route.query.id;
         const todoList = ref();
 
-        // 読み込みのタイミングで取得処理
-        onBeforeMount(async () => {
-            await axios
-                .get("/api/editSearch/" + todoId.value)
-                .then((res) => {
-                    todoList.value = res.data;
-                })
-                .catch((err) => {
-                    let errorText = err.response.data.message;
-                    return openModal(errorText);
-                });
-        });
+        // 編集データセット
+        const formValues = {
+            task: route.query.task,
+            content: route.path.content,
+            memo: route.query.memo,
+        };
 
         const serverError = "";
         // バリデーション一括設定
         const schema = object({
             task: string().required("※タスクは必須項目です。"),
-            content: string().required("※詳細は必須項目です。"),
+            // content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
             // バリデーション
             validationSchema: schema,
+            // 初期表示
+            initialValues: formValues,
         });
         // 各インプット格納
         const { value: task, handleChange: handleTask } = useField("task");
@@ -134,12 +132,12 @@ export default {
                     memo: todoParam["memo"],
                 })
                 .then((response) => {
-                    console.log("成功");
+                    console.log(response);
                     response.data;
-                    return router.push({ path: "/home", query: response });
+                    router.push({ path: "/" });
                 })
                 .catch((err) => {
-                    console.log("失敗");
+                    console.log(err);
                     let errorText = err.response.data.message;
                     return openModal(errorText);
                 });
