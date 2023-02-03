@@ -95,7 +95,7 @@ import { object, string } from "yup";
 import { useRoute, useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
-import deleteData from "../../../functions/Todo/Todo_model.js";
+import deleteData from "./Todo_model.vue";
 
 // テンプレート表示
 export default {
@@ -167,6 +167,7 @@ export default {
         });
         // 削除処理
         const onDelete = () => {
+            console.log(deleteData());
             return deleteData();
         };
 
