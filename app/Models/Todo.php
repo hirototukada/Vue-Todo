@@ -103,11 +103,17 @@ class Todo extends Model
      *  削除処理
      *
      * @param int $id
-     * @return
      */
-    public function deleteData($id)
+    public function deleteData(int $id)
     {
         logger('削除処理スタート');
-        $todoData = Todo::where('id', $id)->delete();
+        try {
+            DB::beginTransaction();
+            Todo::where('id', $id)->delete();
+            DB::commit();
+        } catch (Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+        }
     }
 }

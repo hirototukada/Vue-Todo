@@ -87,7 +87,6 @@ import { object, string } from "yup";
 import { useRoute, useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
-import deleteData from "./Todo_model.vue";
 import Delete from "./Model/Delete.vue";
 
 // テンプレート表示
@@ -189,7 +188,6 @@ export default {
             errorMsg,
             todoList,
             todoId,
-            deleteData,
         };
     },
 };

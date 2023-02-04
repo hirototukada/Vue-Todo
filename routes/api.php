@@ -24,4 +24,4 @@ Route::get('/editSearch/{id}', [TodoController::class, 'searchEditData']);
 Route::post('/todoAdd', [TodoController::class, 'todoAdd']);
 Route::post('/todoEdit', [TodoController::class, 'todoEdit']);
 // Todo削除
-Route::delete('/todoDelete', [TodoController::class, 'todoDelete']);
+Route::delete('/todoDelete/{id}', [TodoController::class, 'todoDelete']);
