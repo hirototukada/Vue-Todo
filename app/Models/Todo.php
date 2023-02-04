@@ -83,7 +83,8 @@ class Todo extends Model
      */
     public function updateData($editTodoData)
     {
-        $todoData = Todo::find($editTodoData['id']);
+        $todoData = Todo::where('id', $editTodoData['id'])->first();
+
         try {
             DB::beginTransaction();
 

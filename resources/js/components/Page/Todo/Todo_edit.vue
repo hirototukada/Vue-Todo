@@ -128,10 +128,10 @@ export default {
         const { value: memo } = useField("memo");
         // 更新クリック処理
         const onSubmit = handleSubmit(async (todoParam) => {
-            // 新規登録処理
+            // 更新処理
             await axios
                 .post("/api/todoEdit", {
-                    id: todoId,
+                    id: todoId.value,
                     task: todoParam["task"],
                     content: todoParam["content"],
                     memo: todoParam["memo"],
