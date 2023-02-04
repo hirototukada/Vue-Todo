@@ -1,5 +1,5 @@
 <script>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 
 // 削除
 const deleteData = () => {

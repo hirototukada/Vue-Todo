@@ -63,15 +63,7 @@
             <!-- メモ -->
             <div class="d-flex">
                 <!-- 削除ボタン -->
-                <div class="text-right">
-                    <button
-                        type="button"
-                        class="btn btn-danger text-end"
-                        @click="onDelete"
-                    >
-                        削除する
-                    </button>
-                </div>
+                <Delete :todoId="todoId" />
                 <!-- 更新ボタン -->
                 <div class="text-right">
                     <button
@@ -96,17 +88,18 @@ import { useRoute, useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
 import deleteData from "./Todo_model.vue";
+import Delete from "./Model/Delete.vue";
 
 // テンプレート表示
 export default {
     components: {
         Modal,
+        Delete,
     },
     setup() {
         const route = useRoute();
         const router = useRouter();
-        console.log(route.query.id);
-        const todoId = route.query.id;
+        const todoId = ref(route.query.id);
         const todoList = ref();
 
         // 編集データセット
@@ -120,7 +113,7 @@ export default {
         // バリデーション一括設定
         const schema = object({
             task: string().required("※タスクは必須項目です。"),
-            // content: string().required("※詳細は必須項目です。"),
+            content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
@@ -165,11 +158,6 @@ export default {
                     return openModal(errorText);
                 });
         });
-        // 削除処理
-        const onDelete = () => {
-            console.log(deleteData());
-            return deleteData();
-        };
 
         //モーダルクリックチェック
         let showContent = ref(false);
@@ -201,7 +189,6 @@ export default {
             errorMsg,
             todoList,
             todoId,
-            onDelete,
             deleteData,
         };
     },
