@@ -61,16 +61,20 @@
                 </div>
             </div>
             <!-- メモ -->
-            <!-- 追加ボタン -->
-            <div class="text-right">
-                <button
-                    :disabled="!meta.valid"
-                    type="button"
-                    class="btn btn-primary text-end"
-                    @click="onSubmit"
-                >
-                    追加する
-                </button>
+            <div class="d-flex">
+                <!-- 削除ボタン -->
+                <Delete :todoId="todoId" />
+                <!-- 更新ボタン -->
+                <div class="text-right">
+                    <button
+                        :disabled="!meta.valid"
+                        type="button"
+                        class="btn btn-primary text-end"
+                        @click="onSubmit"
+                    >
+                        更新する
+                    </button>
+                </div>
             </div>
         </form>
     </div>
@@ -83,17 +87,19 @@ import { object, string } from "yup";
 import { useRoute, useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
+import deleteData from "./Todo_model.vue";
+import Delete from "./Model/Delete.vue";
 
 // テンプレート表示
 export default {
     components: {
         Modal,
+        Delete,
     },
     setup() {
         const route = useRoute();
         const router = useRouter();
-        console.log(route.query.id);
-        const todoId = route.query.id;
+        const todoId = ref(route.query.id);
         const todoList = ref();
 
         // 編集データセット
@@ -107,7 +113,7 @@ export default {
         // バリデーション一括設定
         const schema = object({
             task: string().required("※タスクは必須項目です。"),
-            // content: string().required("※詳細は必須項目です。"),
+            content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
@@ -121,7 +127,7 @@ export default {
         const { value: content, handleChange: handleContent } =
             useField("content");
         const { value: memo } = useField("memo");
-        // 追加クリック処理
+        // 更新クリック処理
         const onSubmit = handleSubmit(async (todoParam) => {
             // 新規登録処理
             await axios
@@ -183,6 +189,7 @@ export default {
             errorMsg,
             todoList,
             todoId,
+            deleteData,
         };
     },
 };

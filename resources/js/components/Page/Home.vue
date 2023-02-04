@@ -1,4 +1,5 @@
 <template>
+    <!-- エラー表示 -->
     <transition name="fade">
         <Modal
             v-if="showContent"
@@ -6,7 +7,7 @@
             v-on:close="closeModal()"
         ></Modal>
     </transition>
-    <h1 class="mt-3 text-center">Todo</h1>
+    <h1 class="text-center mt-3 mb-3">Todo</h1>
     <div class="w-75 m-auto">
         <table class="table">
             <thead>
@@ -36,34 +37,7 @@
                     <th scope="col">編集</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr
-                    v-for="showTodoList in showTodoLists"
-                    :key="showTodoList.id"
-                >
-                    <td>
-                        <div class="form-check">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="defaultCheck1"
-                            />
-                        </div>
-                    </td>
-                    <td>{{ showTodoList.task }}</td>
-                    <td>{{ showTodoList.memo }}</td>
-                    <td>{{ showTodoList.content }}</td>
-                    <td>
-                        <p
-                            class="link"
-                            v-on:click="getEditData(showTodoList.id)"
-                        >
-                            編集
-                        </p>
-                    </td>
-                </tr>
-            </tbody>
+            <Todo_list v-on:open="openModal"></Todo_list>
         </table>
         <div class="text-right">
             <router-link class="mr-3" to="/todoAdd">
@@ -77,66 +51,18 @@
 
 <script>
 import { useRoute, useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import Modal from "../Modal/Modal.vue";
+import Todo_list from "./Todo/Todo_list.vue";
 
 export default {
     components: {
         Modal,
+        Todo_list,
     },
     setup() {
         const route = useRoute();
         const router = useRouter();
-        const showTodoLists = ref();
-        // 読み込みのタイミングで取得処理
-        onMounted(async () => {
-            await axios
-                .get("/api/todo")
-                .then((res) => {
-                    showTodoLists.value = res.data;
-                })
-                .catch((err) => {
-                    let errorText = "";
-                    switch (err.response.status) {
-                        case 422:
-                            errorText = err.response.data.message;
-                            break;
-
-                        default:
-                            errorText =
-                                "サーバーエラーです。時間をおいてアクセスしてください。";
-                            break;
-                    }
-                    return openModal(errorText);
-                });
-        });
-        // 渡す用
-        const getEditData = async (id) => {
-            await axios
-                .get("/api/editSearch/" + id)
-                .then((res) => {
-                    console.log("成功（取得）");
-                    console.log(res.data);
-                    return router.push({
-                        name: "Todo_edit",
-                        query: res.data,
-                    });
-                })
-                .catch((err) => {
-                    let errorText = "";
-                    switch (err.response.status) {
-                        case 422:
-                            errorText = err.response.data.message;
-                            break;
-
-                        default:
-                            errorText =
-                                "サーバーエラーです。時間をおいてアクセスしてください。";
-                            break;
-                    }
-                    return openModal(errorText);
-                });
-        };
 
         //モーダルクリックチェック
         let showContent = ref(false);
@@ -153,12 +79,10 @@ export default {
         };
 
         return {
-            showTodoLists,
             showContent,
             openModal,
             closeModal,
             errorMsg,
-            getEditData,
         };
     },
 };
