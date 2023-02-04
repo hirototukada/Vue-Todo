@@ -16,31 +16,35 @@ export default defineComponent({
         const router = useRouter();
         // 削除処理
         const onDelete = async () => {
-            await axios
-                .delete("/api/todoDelete/" + props.todoId)
-                .then((res) => {
-                    console.log(res.status);
-                    // homeに返す
-                    return router.push({ name: "home" });
-                })
-                .catch((err) => {
-                    console.log(err);
-                    let errorText = "";
-                    switch (err.response.status) {
-                        case 422:
-                            errorText = err.response.data.message;
-                            break;
+            try {
+                await axios
+                    .delete("/api/todoDelete/" + props.todoId)
+                    .then((res) => {
+                        // homeに返す
+                        return router.push({ name: "home" });
+                    });
+            } catch (err) {
+                let errorText = "";
+                switch (err.response.status) {
+                    case 422:
+                        errorText = err.response.data.message;
+                        break;
 
-                        default:
-                            errorText =
-                                "サーバーエラーです。時間をおいてアクセスしてください。";
-                            break;
-                    }
-                    // return openModal(errorText);
-                });
+                    default:
+                        errorText =
+                            "サーバーエラーです。時間をおいてアクセスしてください。";
+                        break;
+                }
+                return openModal(errorText);
+            }
+        };
+        // エラーメッセージ渡す
+        const openModal = (errorText) => {
+            context.emit("open", errorText);
         };
         return {
             onDelete,
+            openModal,
         };
     },
 });

@@ -63,7 +63,7 @@
             <!-- メモ -->
             <div class="d-flex">
                 <!-- 削除ボタン -->
-                <Delete :todoId="todoId" />
+                <Delete :todoId="todoId" v-on:open="openModal" />
                 <!-- 更新ボタン -->
                 <div class="text-right">
                     <button
@@ -112,7 +112,7 @@ export default {
         // バリデーション一括設定
         const schema = object({
             task: string().required("※タスクは必須項目です。"),
-            content: string().required("※詳細は必須項目です。"),
+            // content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
@@ -128,34 +128,35 @@ export default {
         const { value: memo } = useField("memo");
         // 更新クリック処理
         const onSubmit = handleSubmit(async (todoParam) => {
-            // 更新処理
-            await axios
-                .post("/api/todoEdit", {
-                    id: todoId.value,
-                    task: todoParam["task"],
-                    content: todoParam["content"],
-                    memo: todoParam["memo"],
-                })
-                .then((response) => {
-                    console.log(response);
-                    response.data;
-                    router.push({ path: "/" });
-                })
-                .catch((err) => {
-                    let errorText = "";
-                    switch (err.response.status) {
-                        case 422:
-                            errorText = err.response.data.message;
-                            break;
+            try {
+                // 更新処理
+                await axios
+                    .post("/api/todoEdit", {
+                        id: todoId.value,
+                        task: todoParam["task"],
+                        content: todoParam["content"],
+                        memo: todoParam["memo"],
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        response.data;
+                        router.push({ path: "/" });
+                    });
+            } catch (err) {
+                console.log(err);
+                let errorText = "";
+                switch (err.response.status) {
+                    case 422:
+                        errorText = err.response.data.message;
+                        break;
 
-                        default:
-                            errorText =
-                                "サーバーエラーです。時間をおいてアクセスしてください。";
-                            break;
-                    }
-
-                    return openModal(errorText);
-                });
+                    default:
+                        errorText =
+                            "サーバーエラーです。時間をおいてアクセスしてください。";
+                        break;
+                }
+                return openModal(errorText);
+            }
         });
 
         //モーダルクリックチェック
