@@ -8,11 +8,11 @@
         ></Modal>
     </transition>
     <h1 class="text-center mt-3 mb-3">Todo</h1>
-    <div class="w-75 m-auto">
+    <div class="m-auto tableAll">
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">完了チェック</th>
+                    <th scope="col">優先度</th>
                     <th scope="col">タスク</th>
                     <th scope="col">詳細</th>
                     <th scope="col">
@@ -34,6 +34,7 @@
                         </svg>
                         メモ
                     </th>
+                    <th scope="col">登録日</th>
                     <th scope="col">編集</th>
                 </tr>
             </thead>
@@ -88,6 +89,9 @@ export default {
 };
 </script>
 <style>
+.tableAll {
+    width: 85%;
+}
 .link {
     color: #007bff;
     cursor: pointer;

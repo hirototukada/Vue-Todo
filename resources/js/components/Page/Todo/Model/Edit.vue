@@ -17,12 +17,10 @@ export default defineComponent({
                         memo: todoParam["memo"],
                     })
                     .then((response) => {
-                        console.log(response);
                         response.data;
                         router.push({ path: "/" });
                     });
             } catch (err) {
-                console.log(err);
                 let errorText = "";
                 switch (err.response.status) {
                     case 422:
