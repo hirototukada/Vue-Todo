@@ -1,29 +1,28 @@
-<template>
-    <div class="text-right">
-        <button type="button" class="btn btn-danger text-end" @click="onDelete">
-            削除する
-        </button>
-    </div>
-</template>
-
+<template></template>
 <script>
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
-    props: ["todoId"],
     setup(props, context) {
         const router = useRouter();
-        // 削除処理
-        const onDelete = async () => {
+        // 更新処理
+        const editData = async (todoParam, todoId) => {
             try {
                 await axios
-                    .delete("/api/todoDelete/" + props.todoId)
-                    .then((res) => {
-                        // homeに返す
-                        return router.push({ name: "home" });
+                    .post("/api/todoEdit", {
+                        id: todoId,
+                        task: todoParam["task"],
+                        content: todoParam["content"],
+                        memo: todoParam["memo"],
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        response.data;
+                        router.push({ path: "/" });
                     });
             } catch (err) {
+                console.log(err);
                 let errorText = "";
                 switch (err.response.status) {
                     case 422:
@@ -43,7 +42,7 @@ export default defineComponent({
             context.emit("open", errorText);
         };
         return {
-            onDelete,
+            editData,
             openModal,
         };
     },

@@ -14,7 +14,7 @@
                 <tr>
                     <th scope="col">完了チェック</th>
                     <th scope="col">タスク</th>
-                    <th scope="col">メモ</th>
+                    <th scope="col">詳細</th>
                     <th scope="col">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@
                                 d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
                             />
                         </svg>
-                        備考
+                        メモ
                     </th>
                     <th scope="col">編集</th>
                 </tr>

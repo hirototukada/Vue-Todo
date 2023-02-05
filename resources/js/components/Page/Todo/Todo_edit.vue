@@ -9,7 +9,6 @@
     <h1 class="mt-3 text-center">Todo編集</h1>
     <div class="w-75 m-auto">
         <form>
-            <!-- <input type="hidden" id="task" v-model="id" :v-value="todoId" /> -->
             <!-- タスク -->
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">
@@ -62,12 +61,11 @@
             </div>
             <!-- メモ -->
             <div class="d-flex">
-                <!-- 削除ボタン -->
-                <Delete :todoId="todoId" />
+                <!-- 削除ボタンコンポーネント -->
+                <Delete :todoId="todoId" v-on:open="openModal" />
                 <!-- 更新ボタン -->
                 <div class="text-right">
                     <button
-                        :disabled="!meta.valid"
                         type="button"
                         class="btn btn-primary text-end"
                         @click="onSubmit"
@@ -75,6 +73,8 @@
                         更新する
                     </button>
                 </div>
+                <!-- 更新用コンポーネント -->
+                <Edit ref="edit" />
             </div>
         </form>
     </div>
@@ -87,20 +87,20 @@ import { object, string } from "yup";
 import { useRoute, useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
-import deleteData from "./Todo_model.vue";
 import Delete from "./Model/Delete.vue";
+import Edit from "./Model/Edit.vue";
 
 // テンプレート表示
 export default {
     components: {
         Modal,
         Delete,
+        Edit,
     },
-    setup() {
+    setup(props) {
+        // get取得用
         const route = useRoute();
-        const router = useRouter();
         const todoId = ref(route.query.id);
-        const todoList = ref();
 
         // 編集データセット
         const formValues = {
@@ -109,7 +109,6 @@ export default {
             memo: route.query.memo,
         };
 
-        const serverError = "";
         // バリデーション一括設定
         const schema = object({
             task: string().required("※タスクは必須項目です。"),
@@ -122,41 +121,18 @@ export default {
             // 初期表示
             initialValues: formValues,
         });
+
         // 各インプット格納
         const { value: task, handleChange: handleTask } = useField("task");
         const { value: content, handleChange: handleContent } =
             useField("content");
         const { value: memo } = useField("memo");
+
+        // 更新用作動用
+        const edit = ref();
         // 更新クリック処理
         const onSubmit = handleSubmit(async (todoParam) => {
-            // 新規登録処理
-            await axios
-                .post("/api/todoEdit", {
-                    id: todoId,
-                    task: todoParam["task"],
-                    content: todoParam["content"],
-                    memo: todoParam["memo"],
-                })
-                .then((response) => {
-                    console.log(response);
-                    response.data;
-                    router.push({ path: "/" });
-                })
-                .catch((err) => {
-                    let errorText = "";
-                    switch (err.response.status) {
-                        case 422:
-                            errorText = err.response.data.message;
-                            break;
-
-                        default:
-                            errorText =
-                                "サーバーエラーです。時間をおいてアクセスしてください。";
-                            break;
-                    }
-
-                    return openModal(errorText);
-                });
+            edit.value.editData(todoParam, todoId.value);
         });
 
         //モーダルクリックチェック
@@ -179,7 +155,6 @@ export default {
             memo,
             errors,
             meta,
-            serverError,
             handleTask,
             handleContent,
             onSubmit,
@@ -187,9 +162,8 @@ export default {
             openModal,
             closeModal,
             errorMsg,
-            todoList,
             todoId,
-            deleteData,
+            edit,
         };
     },
 };

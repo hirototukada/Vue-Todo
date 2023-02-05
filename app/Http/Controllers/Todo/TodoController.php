@@ -76,15 +76,11 @@ class TodoController extends Controller
     /**
      * 削除処理
      *
-     * @param TodoAddRequest $request
-     * @return void
+     * @param int $id
      */
-    public function todoDelete($id)
+    public function todoDelete(int $id)
     {
-        logger($id);
-
-        // $response = $this->todo->deleteData($id);
-
-        // return $response;
+        // 削除
+        $response = $this->todo->deleteData($id);
     }
 }
