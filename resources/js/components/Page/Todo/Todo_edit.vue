@@ -33,7 +33,7 @@
                 <p class="text-danger">{{ errors.content }}</p>
                 <div class="form-floating">
                     <textarea
-                        class="form-control"
+                        class="form-control text-truncate"
                         v-model="content"
                         id="content"
                         style="height: 100px"
@@ -60,11 +60,11 @@
                 </div>
             </div>
             <!-- メモ -->
-            <div class="d-flex">
+            <div class="d-flex justify-content-end">
                 <!-- 削除ボタンコンポーネント -->
                 <Delete :todoId="todoId" v-on:open="openModal" />
                 <!-- 更新ボタン -->
-                <div class="text-right">
+                <div class="ml-2">
                     <button
                         type="button"
                         class="btn btn-primary text-end"
