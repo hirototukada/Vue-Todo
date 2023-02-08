@@ -5,26 +5,20 @@
             <div class="input-group">
                 <label for="email">メールアドレス</label>
                 <input type="email" id="email" v-model="email" />
-                //v-modelで結びつける
             </div>
             <div class="input-group">
                 <label for="password">パスワード</label>
-                <input
-                    type="password"
-                    id="password"
-                    v-model="password"
-                />//v-modelで結びつける
+                <input type="password" id="password" v-model="password" />
             </div>
             <div class="input-group">
-                <button type="button" @click="register()">新規登録</button
-                >//クリックしたらregister()発火
+                <button type="button" @click="register()">新規登録</button>
             </div>
         </form>
     </div>
 </template>
 
 <script>
-import axios from "../../axios-for-auth"; //axiosのインスタンスをインポート
+import axios from "../../../router/api/firebase_route"; //axiosのインスタンスをインポート
 export default {
     data() {
         return {
