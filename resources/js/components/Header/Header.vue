@@ -8,7 +8,7 @@
             </div>
             <div class="container-fluid">
                 <a class="navbar-brand text-right w-100">
-                    <router-link class="mr-3" to="/home">ホーム</router-link>
+                    <router-link class="mr-3" to="/">ホーム</router-link>
                     <router-link to="/login">ログイン</router-link>
                 </a>
             </div>

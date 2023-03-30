@@ -1,6 +1,6 @@
 <template>
-    <div class="container border mt-4 p-3 text-center border-success form">
-        <form class="w-75 m-auto">
+    <div class="containerCss container text-center">
+        <form class="w-75 m-auto border bg-light p-5">
             <h2 class="mb-4">ログイン</h2>
             <div class="mb-4 text-center">
                 <input
@@ -24,7 +24,7 @@
                 <button
                     type="button"
                     @click="login()"
-                    class="btn btn-primary w-50 p-2 rounded-pill"
+                    class="btn btn-success w-50 p-2 rounded-pill"
                 >
                     送信
                 </button>
@@ -37,7 +37,8 @@
     </div>
 </template>
 <script>
-import axios from "../../../router/api/firebase_route"; //axiosのインスタンスをインポート
+//axiosのインスタンスをインポート
+import axios from "../../../router/api/firebase_route";
 export default {
     data() {
         return {
@@ -47,7 +48,7 @@ export default {
     },
     methods: {
         login() {
-            //axiosでログイン用のインスタンスにアクセスするメソッドを定義
+            //　axiosでログイン用のインスタンスにアクセスするメソッドを定義
             axios
                 .post(
                     //エンドポイントのURLがログイン用のものを使う
@@ -59,8 +60,10 @@ export default {
                     }
                 )
                 .then((response) => {
-                    //返ってきたレスポンスをログに表示
-                    console.log(response);
+                    console.log(response); //返ってきたレスポンスをログに表示
+                })
+                .catch((error) => {
+                    console.log(error);
                 });
             this.email = "";
             this.password = "";
@@ -68,13 +71,16 @@ export default {
     },
 };
 </script>
+
 <style>
-.form {
-}
 h2 {
-    color: green;
+    color: rgb(153, 199, 153);
 }
 .input-group {
     margin: 5px;
+}
+
+.containerCss {
+    margin-top: 100px;
 }
 </style>

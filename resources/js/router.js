@@ -6,18 +6,26 @@ import Todo_edit from "./components/Page/Todo/Todo_edit.vue";
 import Sign_up from "./components/Page/Auth/Sign_up.vue";
 
 const routes = [
-    { path: "/", redirect: "/home" },
     {
-        path: "/home",
+        path: "/",
         name: "home",
         component: Home,
+        // メタフィールド
+        meta: { requiresAuth: true },
     },
-    { path: "/todoAdd", name: "Todo_add", component: Todo_add },
+    {
+        path: "/todoAdd",
+        name: "Todo_add",
+        component: Todo_add, // メタフィールド
+        meta: { requiresAuth: true },
+    },
     {
         path: "/todoEdit",
         name: "Todo_edit",
         component: Todo_edit,
         props: true,
+        // メタフィールド
+        meta: { requiresAuth: true },
     },
     {
         path: "/login",

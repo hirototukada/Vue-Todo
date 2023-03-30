@@ -1,24 +1,40 @@
 <template>
-    <div class="container">
-        <h2>新規登録</h2>
-        <form class="login-form">
-            <div class="input-group">
-                <label for="email">メールアドレス</label>
-                <input type="email" id="email" v-model="email" />
+    <div class="containerCss container text-center">
+        <form class="w-75 m-auto border bg-light p-5">
+            <h2 class="mb-4">新規登録</h2>
+            <div class="mb-4 text-center">
+                <input
+                    type="email"
+                    class="p-2 w-100"
+                    id="email"
+                    v-model="email"
+                    placeholder="メールアドレス"
+                />
             </div>
-            <div class="input-group">
-                <label for="password">パスワード</label>
-                <input type="password" id="password" v-model="password" />
+            <div class="mb-3 text-center">
+                <input
+                    type="password"
+                    class="p-2 w-100"
+                    id="password"
+                    v-model="password"
+                    placeholder="パスワード"
+                />
             </div>
-            <div class="input-group">
-                <button type="button" @click="register()">新規登録</button>
+            <div class="mb-3 text-center">
+                <button
+                    type="button"
+                    @click="register()"
+                    class="btn btn-success w-50 p-2 rounded-pill"
+                >
+                    新規登録
+                </button>
             </div>
         </form>
     </div>
 </template>
-
 <script>
-import axios from "../../../router/api/firebase_route"; //axiosのインスタンスをインポート
+//axiosのインスタンスをインポート
+import axios from "../../../router/api/firebase_route";
 export default {
     data() {
         return {
@@ -39,7 +55,11 @@ export default {
                     }
                 )
                 .then((response) => {
-                    console.log(response); //返ってきたレスポンスをログに表示
+                    //返ってきたレスポンスをログに表示
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
                 });
             this.email = "";
             this.password = "";
