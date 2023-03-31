@@ -8,7 +8,7 @@
             </div>
             <div class="container-fluid">
                 <a class="navbar-brand text-right w-100">
-                    <router-link class="mr-3" to="/home">ホーム</router-link>
+                    <router-link class="mr-3" to="/">ホーム</router-link>
                     <router-link to="/login">ログイン</router-link>
                 </a>
             </div>
@@ -17,5 +17,25 @@
 </template>
 
 <script>
-export default {};
+import { onAuthStateChanged } from "@firebase/auth";
+import { onMounted } from "vue";
+import auth from "../../api/firebase";
+
+export default {
+    setup() {
+        onMounted(() => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    console.log("ログイン中");
+                } else {
+                    console.log("ログアウト中");
+                }
+            });
+        });
+
+        return {
+            onAuthStateChanged,
+        };
+    },
+};
 </script>
