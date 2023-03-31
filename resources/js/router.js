@@ -4,11 +4,13 @@ import Login from "./components/Page/Auth/Login.vue";
 import Todo_add from "./components/Page/Todo/Todo_add.vue";
 import Todo_edit from "./components/Page/Todo/Todo_edit.vue";
 import Sign_up from "./components/Page/Auth/Sign_up.vue";
+import auth from "./api/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const routes = [
     {
         path: "/",
-        name: "home",
+        name: "Home",
         component: Home,
         // メタフィールド
         meta: { requiresAuth: true },
@@ -44,15 +46,18 @@ const router = createRouter({
     routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//     if (
-//         to.matched.some((record) => record.meta.requiresAuth) &&
-//         !Auth.loggedIn
-//     ) {
-//         next({ path: "/login", query: { redirect: to.fullPath } });
-//     } else {
-//         next();
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                next();
+            } else {
+                next({ name: "Login" });
+            }
+        });
+    } else {
+        next();
+    }
+});
 
 export default router;
