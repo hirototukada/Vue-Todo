@@ -33,8 +33,9 @@
     </div>
 </template>
 <script>
-//axiosのインスタンスをインポート
-import axios from "../../../router/api/firebase_route";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
+import auth from "../../../api/firebase";
+
 export default {
     data() {
         return {
@@ -44,23 +45,18 @@ export default {
     },
     methods: {
         register() {
-            //axiosでapiを叩くメソッドを定義
-            axios
-                .post(
-                    "/accounts:signUp?key=AIzaSyDCBKVwJyEsM_86KwFwaMuVyF89FIQKQ1w",
-                    {
-                        email: this.email,
-                        password: this.password,
-                        returnSecureToken: true,
-                    }
-                )
-                .then((response) => {
-                    //返ってきたレスポンスをログに表示
-                    console.log(response);
+            createUserWithEmailAndPassword(auth, this.email, this.password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log("OK");
+                    console.log(user);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log("NG");
                 });
+
             this.email = "";
             this.password = "";
         },
