@@ -17,5 +17,25 @@
 </template>
 
 <script>
-export default {};
+import { onAuthStateChanged } from "@firebase/auth";
+import { onMounted } from "vue";
+import auth from "../../api/firebase";
+
+export default {
+    setup() {
+        onMounted(() => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    console.log("ログイン中");
+                } else {
+                    console.log("ログアウト中");
+                }
+            });
+        });
+
+        return {
+            onAuthStateChanged,
+        };
+    },
+};
 </script>
