@@ -37,35 +37,35 @@
     </div>
 </template>
 <script>
-
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { ref } from "vue";
 import auth from "../../../api/firebase";
+import { useRouter } from "vue-router";
 
 export default {
-    data() {
-        return {
-            email: "",
-            password: "",
-        };
-    },
-    methods: {
-        login() {
-            signInWithEmailAndPassword(auth, this.email, this.password)
+    setup() {
+        const email = ref();
+        const password = ref();
+        const router = useRouter();
+
+        const login = () => {
+            signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
-                    console.log("OK");
-                    console.log(user);
+                    router.push({ name: "Home" });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log("NG");
                 });
 
             this.email = "";
             this.password = "";
-        },
+        };
+        return {
+            login,
+            email,
+            password,
+        };
     },
 };
 </script>
