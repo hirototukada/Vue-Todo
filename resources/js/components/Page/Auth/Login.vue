@@ -37,8 +37,10 @@
     </div>
 </template>
 <script>
-//axiosのインスタンスをインポート
-import axios from "../../../router/api/firebase_route";
+
+import { signInWithEmailAndPassword } from "firebase/auth";
+import auth from "../../../api/firebase";
+
 export default {
     data() {
         return {
@@ -48,23 +50,19 @@ export default {
     },
     methods: {
         login() {
-            //　axiosでログイン用のインスタンスにアクセスするメソッドを定義
-            axios
-                .post(
-                    //エンドポイントのURLがログイン用のものを使う
-                    "/accounts:signInWithPassword?key=AIzaSyDCBKVwJyEsM_86KwFwaMuVyF89FIQKQ1w",
-                    {
-                        email: this.email,
-                        password: this.password,
-                        returnSecureToken: true,
-                    }
-                )
-                .then((response) => {
-                    console.log(response); //返ってきたレスポンスをログに表示
+            signInWithEmailAndPassword(auth, this.email, this.password)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    console.log("OK");
+                    console.log(user);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log("NG");
                 });
+
             this.email = "";
             this.password = "";
         },
