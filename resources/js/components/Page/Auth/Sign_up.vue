@@ -5,6 +5,17 @@
             <h2 class="mb-4">新規登録</h2>
             <div class="mb-4 text-center">
                 <input
+                    type="name"
+                    class="p-2 w-100"
+                    id="name"
+                    v-model="name"
+                    @blur="handleName"
+                    placeholder="ユーザー名"
+                />
+            </div>
+            <p class="text-danger">{{ errors.name }}</p>
+            <div class="mb-4 text-center">
+                <input
                     type="email"
                     class="p-2 w-100"
                     id="email"
@@ -53,6 +64,7 @@ export default {
         let errorMessage = ref();
         // バリデーション一括設定
         const schema = object({
+            name: string().required("※名前は必須項目です。"),
             email: string()
                 .required("※メールアドレスは必須項目です。")
                 .email("正しいメールアドレスで記入してください"),
@@ -71,6 +83,7 @@ export default {
         });
 
         // 各インプット格納
+        const { value: name, handleChange: handleName } = useField("name");
         const { value: email, handleChange: handleEmail } = useField("email");
         const { value: password, handleChange: handlePassword } =
             useField("password");
@@ -83,7 +96,8 @@ export default {
                 userParam["password"]
             )
                 .then((userCredential) => {
-                    router.push({ name: "Login" });
+                    console.log(userCredential.user.email);
+                    // router.push({ name: "Login" });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -100,8 +114,10 @@ export default {
         });
         return {
             register,
+            name,
             email,
             password,
+            handleName,
             handleEmail,
             handlePassword,
             errors,
