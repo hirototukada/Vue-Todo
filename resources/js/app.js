@@ -3,8 +3,9 @@ import { createApp } from "vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import router from "./router";
 import App from "./App.vue";
-import store from "./store";
 import auth from "./api/firebase";
+import { createPinia } from "pinia";
 
-const app = createApp(App).use(router, store, auth);
+const pinia = createPinia();
+const app = createApp(App).use(router, auth, pinia);
 app.mount("#app");
