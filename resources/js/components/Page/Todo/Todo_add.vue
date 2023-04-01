@@ -82,6 +82,7 @@ import { object, string } from "yup";
 import { useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { defineComponent, ref } from "@vue/runtime-core";
+import { add } from "./Model/common";
 
 // テンプレート表示
 export default {
@@ -93,8 +94,8 @@ export default {
         const serverError = "";
         // バリデーション一括設定
         const schema = object({
-            task: string().required("※タスクは必須項目です。"),
-            content: string().required("※詳細は必須項目です。"),
+            // task: string().required("※タスクは必須項目です。"),
+            // content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
@@ -107,6 +108,7 @@ export default {
                 memo: "",
             },
         });
+        let res = ref();
         // 各インプット格納
         const { value: task, handleChange: handleTask } = useField("task");
         const { value: content, handleChange: handleContent } =
@@ -114,22 +116,14 @@ export default {
         const { value: memo } = useField("memo");
         // 追加クリック処理
         const onSubmit = handleSubmit(async (todoParam) => {
-            // 新規登録処理
-            await axios
-                .post("api/todoAdd", {
-                    task: todoParam["task"],
-                    content: todoParam["content"],
-                    memo: todoParam["memo"],
-                })
-                .then((response) => {
-                    response.data;
-                    return router.push({ path: "/home", query: response });
-                })
-                .catch((err) => {
-                    let errorText = err.response.data.message;
-                    return openModal(errorText);
-                });
-            // 結果表示
+            res = add(todoParam);
+            res.then((result) => {
+                if (result.res) {
+                    router.push({ path: "/", query: res["res"] });
+                } else {
+                    openModal(result.error);
+                }
+            });
         });
 
         //モーダルクリックチェック
