@@ -1,3 +1,4 @@
+// インサート処理
 export async function add(todoParam) {
     let response = {
         res: "",
@@ -13,7 +14,6 @@ export async function add(todoParam) {
             response["res"] = res;
         })
         .catch((err) => {
-            console.log(err.response.data.message);
             response.error = err.response.data.message;
 
             return response;
