@@ -8,7 +8,9 @@
             </div>
             <div class="container-fluid">
                 <a class="navbar-brand text-right w-100">
-                    <router-link class="mr-3" to="/">ホーム</router-link>
+                    <router-link class="mr-3" v-if="authUser == true" to="/"
+                        >ホーム</router-link
+                    >
                     <router-link v-if="authUser == false" to="/login"
                         >ログイン</router-link
                     >
@@ -34,15 +36,15 @@ export default {
         onMounted(() => {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
+                    // ログイン中
                     authUser.value = true;
-                    console.log("ログイン中");
                 } else {
+                    // ログアウト中
                     authUser.value = false;
-                    console.log("ログアウト中");
                 }
             });
         });
-
+        // ログアウト処理
         const logOut = () => {
             signOut(auth);
             router.push({ name: "Login" });

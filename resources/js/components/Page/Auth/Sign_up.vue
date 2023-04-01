@@ -1,5 +1,6 @@
 <template>
     <div class="containerCss container text-center">
+        <p class="text-danger">{{ errorMessage }}</p>
         <form class="w-75 m-auto border bg-light p-5">
             <h2 class="mb-4">新規登録</h2>
             <div class="mb-4 text-center">
@@ -31,7 +32,7 @@
                     @click="register"
                     class="btn btn-success w-50 p-2 rounded-pill"
                 >
-                    新規登録
+                    登録
                 </button>
             </div>
         </form>
@@ -41,6 +42,7 @@
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import auth from "../../../api/firebase";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 // バリデーション関連
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
@@ -48,6 +50,7 @@ import { object, string } from "yup";
 export default {
     setup() {
         const router = useRouter();
+        let errorMessage = ref();
         // バリデーション一括設定
         const schema = object({
             email: string()
@@ -80,11 +83,19 @@ export default {
                 userParam["password"]
             )
                 .then((userCredential) => {
-                    router.push({ name: "Home" });
+                    router.push({ name: "Login" });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
-                    const errorMessage = error.message;
+                    if (errorCode == "auth / invalid - email") {
+                        errorMessage.value = "無効なメールアドレスです。";
+                    } else if (errorCode == "auth/email-already-in-use") {
+                        errorMessage.value =
+                            "このメール アドレスは、別のアカウントで既に使用されています。";
+                    } else {
+                        errorMessage.value =
+                            "サーバーエラーです。後でもう一度ログインしてみてください。";
+                    }
                 });
         });
         return {
@@ -95,6 +106,7 @@ export default {
             handlePassword,
             errors,
             meta,
+            errorMessage,
         };
     },
 };

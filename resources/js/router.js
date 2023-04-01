@@ -12,13 +12,14 @@ const routes = [
         path: "/",
         name: "Home",
         component: Home,
-        // メタフィールド
+        // 認証ガード
         meta: { requiresAuth: true },
     },
     {
         path: "/todoAdd",
         name: "Todo_add",
-        component: Todo_add, // メタフィールド
+        component: Todo_add,
+        // 認証ガード
         meta: { requiresAuth: true },
     },
     {
@@ -26,7 +27,7 @@ const routes = [
         name: "Todo_edit",
         component: Todo_edit,
         props: true,
-        // メタフィールド
+        // 認証ガード
         meta: { requiresAuth: true },
     },
     {

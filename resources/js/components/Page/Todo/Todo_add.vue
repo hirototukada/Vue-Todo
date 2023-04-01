@@ -114,7 +114,7 @@ export default {
         const { value: content, handleChange: handleContent } =
             useField("content");
         const { value: memo } = useField("memo");
-        // 追加クリック処理
+        // インサート処理
         const onSubmit = handleSubmit(async (todoParam) => {
             res = add(todoParam);
             // プロミスリザルト変換処理
