@@ -1,5 +1,6 @@
 <template>
     <div class="containerCss container text-center">
+        <p class="text-danger">{{ errorMessage }}</p>
         <form class="w-75 m-auto border bg-light p-5">
             <h2 class="mb-4">ログイン</h2>
             <div class="mb-4 text-center">
@@ -44,6 +45,7 @@
 <script>
 import { signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../../../api/firebase";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 // バリデーション関連
 import { useField, useForm } from "vee-validate";
@@ -52,6 +54,7 @@ import { object, string } from "yup";
 export default {
     setup() {
         const router = useRouter();
+        let errorMessage = ref();
 
         // バリデーション一括設定
         const schema = object({
@@ -84,11 +87,19 @@ export default {
                 userParam["password"]
             )
                 .then((userCredential) => {
-                    router.push({ name: "Home" });
+                    router.push({ name: "Home", query: userCredential });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
-                    const errorMessage = error.message;
+                    if (errorCode == "auth/wrong-password") {
+                        errorMessage.value = "無効なパスワードです。";
+                    } else if (errorCode == "auth/too-many-requests") {
+                        errorMessage.value =
+                            "ログインに何度も失敗したため、このアカウントへのアクセスは一時的に無効になっています。パスワードをリセットしてすぐに復元するか、後でもう一度やり直してください。";
+                    } else {
+                        errorMessage.value =
+                            "サーバーエラーです。後でもう一度ログインしてみてください。";
+                    }
                 });
         });
 
@@ -100,6 +111,7 @@ export default {
             handlePassword,
             errors,
             meta,
+            errorMessage,
         };
     },
 };

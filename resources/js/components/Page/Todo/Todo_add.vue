@@ -94,8 +94,8 @@ export default {
         const serverError = "";
         // バリデーション一括設定
         const schema = object({
-            // task: string().required("※タスクは必須項目です。"),
-            // content: string().required("※詳細は必須項目です。"),
+            task: string().required("※タスクは必須項目です。"),
+            content: string().required("※詳細は必須項目です。"),
         });
         // スチーマー反映結果格納
         const { errors, meta, handleSubmit } = useForm({
@@ -114,10 +114,12 @@ export default {
         const { value: content, handleChange: handleContent } =
             useField("content");
         const { value: memo } = useField("memo");
-        // 追加クリック処理
+        // インサート処理
         const onSubmit = handleSubmit(async (todoParam) => {
             res = add(todoParam);
+            // プロミスリザルト変換処理
             res.then((result) => {
+                // エラーハンドリング
                 if (result.res) {
                     router.push({ path: "/", query: res["res"] });
                 } else {

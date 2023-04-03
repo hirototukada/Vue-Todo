@@ -25,3 +25,5 @@ Route::post('/todoAdd', [TodoController::class, 'todoAdd']);
 Route::post('/todoEdit', [TodoController::class, 'todoEdit']);
 // Todo削除
 Route::delete('/todoDelete/{id}', [TodoController::class, 'todoDelete']);
+// ユーザー情報登録
+// Route::entry('/userEntry', [User]);
