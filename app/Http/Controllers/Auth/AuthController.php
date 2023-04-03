@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Log\Logger;
 
 class AuthController extends Controller
 {
@@ -16,14 +18,14 @@ class AuthController extends Controller
     }
     /**
      * 登録処理
-     * ファイアーベースでバリデーションしているためバリデーションなし
      *
-     * @param array $userParam
+     * @param UserRequest $request
      * @return int $id
      */
-    public function userStore(array $userParam)
+    public function userEntry(UserRequest $request)
     {
+        Logger($request);
         // 登録処理
-        $this->user->store($userParam);
+        $this->user->store($request);
     }
 }

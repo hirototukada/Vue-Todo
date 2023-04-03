@@ -1,13 +1,14 @@
 // インサート処理
-export async function userSign(userParam) {
+export async function userEntry(userParam) {
     let response = {
         res: "",
         error: "",
     };
     await axios
-        .post("api/todoAdd", {
+        .post("api/userEntry", {
             name: userParam["name"],
             email: userParam["email"],
+            password: userParam["password"],
         })
         .then((res) => {
             response["res"] = res;
