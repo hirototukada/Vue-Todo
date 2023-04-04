@@ -1,12 +1,8 @@
 <template>
     <transition name="fade">
-        <Modal
-            v-if="showContent"
-            :errorMsg="errorMsg"
-            v-on:close="closeModal()"
-        ></Modal>
+        <Modal v-if="error.show"></Modal>
     </transition>
-    <h1 class="mt-3 text-center">タスク追加パーツ</h1>
+    <h1 class="mt-3 text-center">タスク追加</h1>
     <div class="w-75 m-auto">
         <form>
             <!-- タスク -->
@@ -83,7 +79,7 @@ import { useRouter } from "vue-router";
 import Modal from "../../Modal/Modal.vue";
 import { defineComponent, ref } from "@vue/runtime-core";
 import { add } from "./Model/common";
-
+import { useErrorStore } from "../../../stores/error";
 // テンプレート表示
 export default {
     components: {
@@ -92,6 +88,8 @@ export default {
     setup() {
         const router = useRouter();
         const serverError = "";
+        const error = useErrorStore();
+
         // バリデーション一括設定
         const schema = object({
             task: string().required("※タスクは必須項目です。"),
@@ -123,24 +121,11 @@ export default {
                 if (result.res) {
                     router.push({ path: "/", query: res["res"] });
                 } else {
-                    openModal(result.error);
+                    error.massage = result.error;
+                    error.switch();
                 }
             });
         });
-
-        //モーダルクリックチェック
-        let showContent = ref(false);
-        // エラーメッセージ格納
-        let errorMsg = ref();
-        // モーダルウィンドウを表示する.
-        let openModal = (errorText) => {
-            showContent.value = true;
-            errorMsg.value = errorText;
-        };
-        //  モーダルウィンドを閉じる.
-        let closeModal = () => {
-            showContent.value = false;
-        };
 
         return {
             task,
@@ -152,10 +137,7 @@ export default {
             handleTask,
             handleContent,
             onSubmit,
-            showContent,
-            openModal,
-            closeModal,
-            errorMsg,
+            error,
         };
     },
 };

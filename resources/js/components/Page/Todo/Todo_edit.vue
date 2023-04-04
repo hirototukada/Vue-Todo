@@ -1,10 +1,6 @@
 <template>
     <transition name="fade">
-        <Modal
-            v-if="showContent"
-            :errorMsg="errorMsg"
-            v-on:close="closeModal()"
-        ></Modal>
+        <Modal v-if="error.show"></Modal>
     </transition>
     <h1 class="mt-3 text-center">Todo編集</h1>
     <div class="w-75 m-auto">
@@ -66,6 +62,7 @@
                 <!-- 更新ボタン -->
                 <div class="ml-2">
                     <button
+                        :disabled="!meta.valid"
                         type="button"
                         class="btn btn-primary text-end"
                         @click="onSubmit"
@@ -89,6 +86,7 @@ import Modal from "../../Modal/Modal.vue";
 import { ref, onMounted, onBeforeMount } from "vue";
 import Delete from "./Model/Delete.vue";
 import Edit from "./Model/Edit.vue";
+import { useErrorStore } from "../../../stores/error";
 
 // テンプレート表示
 export default {
@@ -101,6 +99,8 @@ export default {
         // get取得用
         const route = useRoute();
         const todoId = ref(route.query.id);
+
+        const error = useErrorStore();
 
         // 編集データセット
         const formValues = {
@@ -135,20 +135,6 @@ export default {
             edit.value.editData(todoParam, todoId.value);
         });
 
-        //モーダルクリックチェック
-        let showContent = ref(false);
-        // エラーメッセージ格納
-        let errorMsg = ref();
-        // モーダルウィンドウを表示する.
-        let openModal = (errorText) => {
-            showContent.value = true;
-            errorMsg.value = errorText;
-        };
-        //  モーダルウィンドを閉じる.
-        let closeModal = () => {
-            showContent.value = false;
-        };
-
         return {
             task,
             content,
@@ -158,12 +144,9 @@ export default {
             handleTask,
             handleContent,
             onSubmit,
-            showContent,
-            openModal,
-            closeModal,
-            errorMsg,
             todoId,
             edit,
+            error,
         };
     },
 };
