@@ -57,6 +57,7 @@ import { ref } from "vue";
 // バリデーション関連
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
+import { userEntry } from "./common/user";
 
 export default {
     setup() {
@@ -96,7 +97,7 @@ export default {
                 userParam["password"]
             )
                 .then((userCredential) => {
-                    console.log(userCredential.user.email);
+                    userEntry(userParam);
                     // router.push({ name: "Login" });
                 })
                 .catch((error) => {

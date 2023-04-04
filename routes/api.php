@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Todo\TodoController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,4 @@ Route::post('/todoEdit', [TodoController::class, 'todoEdit']);
 // Todo削除
 Route::delete('/todoDelete/{id}', [TodoController::class, 'todoDelete']);
 // ユーザー情報登録
-// Route::entry('/userEntry', [User]);
+Route::post('/userEntry', [AuthController::class, 'userEntry']);

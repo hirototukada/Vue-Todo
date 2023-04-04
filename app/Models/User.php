@@ -47,6 +47,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    // パスワードハッシュ化用
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function getPasswordAttribute($value)
+    {
+        return $value;
+    }
 
     /**
      * 登録処理
@@ -56,13 +66,13 @@ class User extends Authenticatable
      */
     public function store($userParam)
     {
-        logger('test');
         try {
             DB::beginTransaction();
 
-            Todo::create([
+            User::create([
                 'name' => $userParam['name'],
                 'email' => $userParam['email'],
+                'password' => $userParam['password'],
             ]);
 
             DB::commit();
