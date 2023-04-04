@@ -1,5 +1,6 @@
 <script setup>
 import Header from "./components/Header/Header.vue";
+import Modal from "./components/Modal/Modal.vue";
 </script>
 
 <template>

@@ -9,6 +9,7 @@
 <script>
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
+import { useErrorStore } from "../../../../stores/error";
 
 export default defineComponent({
     props: ["todoId"],
@@ -35,16 +36,16 @@ export default defineComponent({
                             "サーバーエラーです。時間をおいてアクセスしてください。";
                         break;
                 }
-                return openModal(errorText);
+                error.massage = errorText;
+                error.switch();
             }
         };
-        // エラーメッセージ渡す
-        const openModal = (errorText) => {
-            context.emit("open", errorText);
-        };
+
+        const error = useErrorStore();
+
         return {
+            error,
             onDelete,
-            openModal,
         };
     },
 });

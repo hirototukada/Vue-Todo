@@ -1,6 +1,8 @@
 <template>
     <div class="containerCss container text-center">
-        <p class="text-danger">{{ errorMessage }}</p>
+        <transition name="fade">
+            <Modal v-if="errorStore.show"></Modal>
+        </transition>
         <form class="w-75 m-auto border bg-light p-5">
             <h2 class="mb-4">新規登録</h2>
             <div class="mb-4 text-center">
@@ -58,18 +60,27 @@ import { ref } from "vue";
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
 import { userEntry } from "./common/user";
+import Modal from "../../Modal/Modal.vue";
+import { useErrorStore } from "../../../stores/error";
 
 export default {
+    components: {
+        Modal,
+    },
     setup() {
         const router = useRouter();
-        let errorMessage = ref();
+        // errorモーダル用pinia
+        const errorStore = useErrorStore();
+
         // バリデーション一括設定
         const schema = object({
             name: string().required("※名前は必須項目です。"),
             email: string()
                 .required("※メールアドレスは必須項目です。")
                 .email("正しいメールアドレスで記入してください"),
-            password: string().required("※パスワードは必須項目です。"),
+            password: string()
+                .required("※パスワードは必須項目です。")
+                .min(6, "※６文字以上で記載してください。"),
         });
 
         // スチーマー反映結果格納
@@ -98,19 +109,20 @@ export default {
             )
                 .then((userCredential) => {
                     userEntry(userParam);
-                    // router.push({ name: "Login" });
+                    router.push({ name: "Login" });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     if (errorCode == "auth / invalid - email") {
-                        errorMessage.value = "無効なメールアドレスです。";
+                        errorStore.massage = "無効なメールアドレスです。";
                     } else if (errorCode == "auth/email-already-in-use") {
-                        errorMessage.value =
+                        errorStore.massage =
                             "このメール アドレスは、別のアカウントで既に使用されています。";
                     } else {
-                        errorMessage.value =
+                        errorStore.massage =
                             "サーバーエラーです。後でもう一度ログインしてみてください。";
                     }
+                    errorStore.switch();
                 });
         });
         return {
@@ -123,7 +135,7 @@ export default {
             handlePassword,
             errors,
             meta,
-            errorMessage,
+            errorStore,
         };
     },
 };

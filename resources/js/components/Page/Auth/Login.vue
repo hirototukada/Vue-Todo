@@ -1,6 +1,8 @@
 <template>
     <div class="containerCss container text-center">
-        <p class="text-danger">{{ errorMessage }}</p>
+        <transition name="fade">
+            <Modal v-if="errorStore.show"></Modal>
+        </transition>
         <form class="w-75 m-auto border bg-light p-5">
             <h2 class="mb-4">ログイン</h2>
             <div class="mb-4 text-center">
@@ -50,18 +52,25 @@ import { useRouter } from "vue-router";
 // バリデーション関連
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
+import Modal from "../../Modal/Modal.vue";
+import { useErrorStore } from "../../../stores/error";
 
 export default {
+    components: {
+        Modal,
+    },
     setup() {
         const router = useRouter();
-        let errorMessage = ref();
+        const errorStore = useErrorStore();
 
         // バリデーション一括設定
         const schema = object({
             email: string()
                 .required("※メールアドレスは必須項目です。")
                 .email("正しいメールアドレスで記入してください"),
-            password: string().required("※パスワードは必須項目です。"),
+            password: string()
+                .required("※パスワードは必須項目です。")
+                .min(6, "※６文字以上で記載してください。"),
         });
 
         // スチーマー反映結果格納
@@ -92,14 +101,15 @@ export default {
                 .catch((error) => {
                     const errorCode = error.code;
                     if (errorCode == "auth/wrong-password") {
-                        errorMessage.value = "無効なパスワードです。";
+                        errorStore.massage = "無効なパスワードです。";
                     } else if (errorCode == "auth/too-many-requests") {
-                        errorMessage.value =
+                        errorStore.massage =
                             "ログインに何度も失敗したため、このアカウントへのアクセスは一時的に無効になっています。パスワードをリセットしてすぐに復元するか、後でもう一度やり直してください。";
                     } else {
-                        errorMessage.value =
+                        errorStore.massage =
                             "サーバーエラーです。後でもう一度ログインしてみてください。";
                     }
+                    errorStore.switch();
                 });
         });
 
@@ -111,7 +121,7 @@ export default {
             handlePassword,
             errors,
             meta,
-            errorMessage,
+            errorStore,
         };
     },
 };
