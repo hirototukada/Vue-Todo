@@ -28,4 +28,19 @@ class AuthController extends Controller
         // 登録処理
         $this->user->store($request);
     }
+    /**
+     * ユーザー情報取得処理
+     *
+     * @param string $email
+     * @return array $userParam
+     */
+    public function getUserData(string $email)
+    {
+        Logger('user取得処理開始');
+        Logger($email);
+
+        $userParam = $this->user->getData($email);
+        Logger($userParam);
+        return $userParam;
+    }
 }

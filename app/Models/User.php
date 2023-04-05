@@ -81,4 +81,17 @@ class User extends Authenticatable
             DB::rollBack();
         }
     }
+
+    /**
+     * emailからユーザー情報取得処理
+     *
+     * @param string $email
+     * @return array $userParam
+     */
+    public function getData(string $email)
+    {
+        $userParam = User::where('email', $email)->first();
+
+        return $userParam;
+    }
 }
