@@ -28,3 +28,4 @@ Route::post('/todoEdit', [TodoController::class, 'todoEdit']);
 Route::delete('/todoDelete/{id}', [TodoController::class, 'todoDelete']);
 // ユーザー情報登録
 Route::post('/userEntry', [AuthController::class, 'userEntry']);
+Route::get('/getUserData/{email}', [AuthController::class, 'getUserData']);

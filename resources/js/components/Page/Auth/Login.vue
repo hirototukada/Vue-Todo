@@ -54,6 +54,7 @@ import { useField, useForm } from "vee-validate";
 import { object, string } from "yup";
 import Modal from "../../Modal/Modal.vue";
 import { useErrorStore } from "../../../stores/error";
+import { useUserStore } from "../../../stores/user";
 
 export default {
     components: {
@@ -62,6 +63,7 @@ export default {
     setup() {
         const router = useRouter();
         const errorStore = useErrorStore();
+        const userStore = useUserStore();
 
         // バリデーション一括設定
         const schema = object({
@@ -96,6 +98,7 @@ export default {
                 userParam["password"]
             )
                 .then((userCredential) => {
+                    userStore.getUserData(userCredential.user.email);
                     router.push({ name: "Home", query: userCredential });
                 })
                 .catch((error) => {
@@ -122,6 +125,7 @@ export default {
             errors,
             meta,
             errorStore,
+            userStore,
         };
     },
 };
