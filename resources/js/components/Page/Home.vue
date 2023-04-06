@@ -38,7 +38,7 @@
                     <th scope="col">編集</th>
                 </tr>
             </thead>
-            <Todo_list v-on:open="openModal"></Todo_list>
+            <Todo_list></Todo_list>
         </table>
         <div class="text-right">
             <router-link class="mr-3" to="/todoAdd">
