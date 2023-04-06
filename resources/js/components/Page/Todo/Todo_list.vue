@@ -23,6 +23,16 @@
                 </p>
             </td>
         </tr>
+        <InfiniteLoading @infinite="load">
+            <template #complete>
+                <span>読み込み終了</span>
+            </template>
+        </InfiniteLoading>
+        <!-- <div class="result" v-for="comment in comments" :key="comment.id">
+            <div>{{ comment.email }}</div>
+            <div>{{ comment.id }}</div>
+        </div>
+        <InfiniteLoading @infinite="load" /> -->
     </tbody>
 </template>
 
@@ -32,34 +42,55 @@ import { useRoute, useRouter } from "vue-router";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 import dayjs from "dayjs";
+import { getTodoData } from "./Model/common";
+import { useErrorStore } from "../../../stores/error";
+
 dayjs.locale("ja");
 
 export default defineComponent({
+    components: { InfiniteLoading },
     setup(props, context) {
         const router = useRouter();
         const showTodoLists = ref();
+        const error = useErrorStore();
+
+        let comments = ref([]);
+        let page = 1;
+        const load = async ($state) => {
+            console.log($state.loaded());
+            // console.log("loading...");
+            // try {
+            //     const response = await fetch(
+            //         "https://jsonplaceholder.typicode.com/comments?_limit=10&_page=" +
+            //             page
+            //     );
+            //     const json = await response.json();
+            //     console.log(json);
+            //     if (json.length < 10) $state.complete();
+            //     else {
+            //         comments.value.push(...json);
+            //         $state.loaded();
+            //     }
+            //     page++;
+            // } catch (error) {
+            //     $state.error();
+            // }
+        };
+        let res = ref();
         // 読み込みのタイミングで取得処理
         onMounted(async () => {
-            await axios
-                .get("/api/todo")
-                .then((res) => {
-                    console.log(res.data.length);
-                    showTodoLists.value = res.data;
-                })
-                .catch((err) => {
-                    let errorText = "";
-                    switch (err.response.status) {
-                        case 422:
-                            errorText = err.response.data.message;
-                            break;
-
-                        default:
-                            errorText =
-                                "サーバーエラーです。時間をおいてアクセスしてください。";
-                            break;
-                    }
-                    return openModal(errorText);
-                });
+            // 取得処理
+            res = getTodoData();
+            // プロミスリザルト変換処理
+            res.then((result) => {
+                // エラーハンドリング
+                if (result.res) {
+                    showTodoLists.value = result.res.data;
+                } else {
+                    error.massage = result.error;
+                    error.switch();
+                }
+            });
         });
 
         const format = (date) => {
@@ -77,31 +108,43 @@ export default defineComponent({
                     });
                 })
                 .catch((err) => {
-                    let errorText = "";
                     switch (err.response.status) {
                         case 422:
-                            errorText = err.response.data.message;
+                            error.massage = err.response.data.message;
                             break;
 
                         default:
-                            errorText =
+                            error.massage =
                                 "サーバーエラーです。時間をおいてアクセスしてください。";
                             break;
                     }
-                    return openModal(errorText);
+                    error.switch();
                 });
-        };
-        // エラーを受け取る用
-        let openModal = (errorMsg) => {
-            context.emit("open", errorMsg);
         };
 
         return {
             showTodoLists,
             getEditData,
-            openModal,
             format,
+            load,
+            comments,
+            error,
         };
     },
 });
 </script>
+
+<style>
+.result {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-weight: 300;
+    width: 400px;
+    padding: 10px;
+    text-align: center;
+    margin: 0 auto 10px auto;
+    background: #eceef0;
+    border-radius: 10px;
+}
+</style>
