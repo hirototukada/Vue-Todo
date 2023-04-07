@@ -1,6 +1,6 @@
 <template>
     <tbody>
-        <tr v-for="showTodoList in showTodoLists" :key="showTodoList.id">
+        <!-- <tr v-for="showTodoList in showTodoLists" :key="showTodoList.id">
             <td>
                 <div class="form-check">
                     <input
@@ -22,17 +22,12 @@
                     編集
                 </p>
             </td>
-        </tr>
-        <InfiniteLoading @infinite="load">
-            <template #complete>
-                <span>読み込み終了</span>
-            </template>
-        </InfiniteLoading>
-        <!-- <div class="result" v-for="comment in comments" :key="comment.id">
+        </tr> -->
+        <div class="result" v-for="comment in comments" :key="comment.id">
             <div>{{ comment.email }}</div>
             <div>{{ comment.id }}</div>
         </div>
-        <InfiniteLoading @infinite="load" /> -->
+        <InfiniteLoading @infinite="load" />
     </tbody>
 </template>
 
@@ -52,29 +47,29 @@ export default defineComponent({
     setup(props, context) {
         const router = useRouter();
         const showTodoLists = ref();
+        const test = ref();
         const error = useErrorStore();
 
         let comments = ref([]);
         let page = 1;
         const load = async ($state) => {
-            console.log($state.loaded());
-            // console.log("loading...");
-            // try {
-            //     const response = await fetch(
-            //         "https://jsonplaceholder.typicode.com/comments?_limit=10&_page=" +
-            //             page
-            //     );
-            //     const json = await response.json();
-            //     console.log(json);
-            //     if (json.length < 10) $state.complete();
-            //     else {
-            //         comments.value.push(...json);
-            //         $state.loaded();
-            //     }
-            //     page++;
-            // } catch (error) {
-            //     $state.error();
-            // }
+            console.log("loading...");
+
+            try {
+                const response = await fetch(
+                    "https://jsonplaceholder.typicode.com/comments?_limit=10&_page=" +
+                        page
+                );
+                const json = await response.json();
+                if (json.length < 10) $state.complete();
+                else {
+                    comments.value.push(...json);
+                    $state.loaded();
+                }
+                page++;
+            } catch (error) {
+                $state.error();
+            }
         };
         let res = ref();
         // 読み込みのタイミングで取得処理
@@ -86,6 +81,9 @@ export default defineComponent({
                 // エラーハンドリング
                 if (result.res) {
                     showTodoLists.value = result.res.data;
+                    test.value = showTodoLists.value;
+                    test.value.slice(0, 10);
+                    console.log(test.value);
                 } else {
                     error.massage = result.error;
                     error.switch();
