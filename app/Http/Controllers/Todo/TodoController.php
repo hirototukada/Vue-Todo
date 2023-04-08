@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Todo;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TodoAddRequest;
+use App\Http\UseCase\Todo\getData;
 use App\Models\Todo;
 use App\Models\User;
 
@@ -23,10 +24,10 @@ class TodoController extends Controller
      *
      * @return array
      */
-    public function index(): array
+    public function index($page): array
     {
         // Todo取得処理
-        $todoParam = $this->todo->getData();
+        $todoParam = $this->todo->getData($page);
 
         return $todoParam;
     }

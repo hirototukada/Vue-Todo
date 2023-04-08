@@ -23,13 +23,18 @@ export async function add(todoParam) {
 }
 
 // 取得処理
-export async function getTodoData() {
+export async function getTodoData(page = 1) {
     let response = {
         res: "",
         error: "",
     };
+    console.log(page);
+    let apiUrl = "/api/todo/" + page;
+    if (page > 1) {
+        apiUrl = "/api/todo/" + page;
+    }
     await axios
-        .get("/api/todo")
+        .get(apiUrl)
         .then((res) => {
             response.res = res;
         })
