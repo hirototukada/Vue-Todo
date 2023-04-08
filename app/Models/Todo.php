@@ -26,12 +26,15 @@ class Todo extends Model
      *
      * @return array $todoParam
      */
-    public function getData(): array
+    public function getData($page): array
     {
         logger('取得処理始まり');
+        logger($page);
 
-        $todoParam = Todo::get()->toArray();
+        $pages = $this->countReplacement($page);
 
+        $todoParam = Todo::offset($pages['start'])->limit($pages['next'])->get()->toArray();
+        logger($todoParam);
         return $todoParam;
     }
 
@@ -116,5 +119,26 @@ class Todo extends Model
             Log::error($e);
             DB::rollBack();
         }
+    }
+
+    /**
+     * ページ数取得用
+     *
+     * @param [type] $page
+     * @return array
+     */
+    private function countReplacement($page)
+    {
+        $pages = [];
+        if ($page == 1) {
+            $pages['start'] = $page - 1;
+            $pages['next']  = $page * 10;
+        } else {
+            $math          = $page - 1;
+            $page['start'] = $math * 10;
+            $pages['next'] = $page * 10;
+        }
+
+        return $pages;
     }
 }
