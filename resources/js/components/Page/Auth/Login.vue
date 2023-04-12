@@ -5,7 +5,7 @@
         </transition>
         <form class="w-75 m-auto border bg-light p-5">
             <h2 class="mb-4">ログイン</h2>
-            <div class="mb-4 text-center">
+            <div class="mb-4 text-center h-100">
                 <input
                     type="email"
                     class="p-2 w-100"

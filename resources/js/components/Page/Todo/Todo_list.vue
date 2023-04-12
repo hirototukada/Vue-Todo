@@ -1,4 +1,4 @@
-<template #complete>
+<template>
     <tbody>
         <tr v-for="showTodoList in showTodoLists" :key="showTodoList.id">
             <td>
@@ -23,10 +23,6 @@
                 </p>
             </td>
         </tr>
-        <!-- <div class="result" v-for="comment in comments" :key="comment.id">
-            <div>{{ comment.email }}</div>
-            <div>{{ comment.id }}</div>
-        </div> -->
         <InfiniteLoading @infinite="load"> </InfiniteLoading>
     </tbody>
 </template>
@@ -49,7 +45,7 @@ export default defineComponent({
         const showTodoLists = ref([]);
         const error = useErrorStore();
 
-        let count = ref();
+        let count = ref(10);
         let page = 1;
         const load = async ($state) => {
             console.log("loading...");

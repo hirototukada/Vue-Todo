@@ -1,6 +1,7 @@
 <script setup>
 import Header from "./components/Header/Header.vue";
 import Modal from "./components/Modal/Modal.vue";
+import Footer from "./components/Footer.vue";
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import Modal from "./components/Modal/Modal.vue";
     <Header />
     <!-- ページ定義 -->
     <router-view />
+    <Footer />
 </template>
 
 <script>
