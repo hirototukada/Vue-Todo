@@ -1,4 +1,4 @@
-<template>
+<template #complete>
     <tbody>
         <tr v-for="showTodoList in showTodoLists" :key="showTodoList.id">
             <td>
@@ -27,7 +27,7 @@
             <div>{{ comment.email }}</div>
             <div>{{ comment.id }}</div>
         </div> -->
-        <InfiniteLoading @infinite="load" />
+        <InfiniteLoading @infinite="load"> </InfiniteLoading>
     </tbody>
 </template>
 
@@ -46,10 +46,10 @@ export default defineComponent({
     components: { InfiniteLoading },
     setup(props, context) {
         const router = useRouter();
-        const showTodoLists = ref();
+        const showTodoLists = ref([]);
         const error = useErrorStore();
 
-        let comments = ref([]);
+        let count = ref();
         let page = 1;
         const load = async ($state) => {
             console.log("loading...");
@@ -59,34 +59,21 @@ export default defineComponent({
             res.then((result) => {
                 // エラーハンドリング
                 if (result.res) {
-                    showTodoLists.value = result.res.data;
+                    count.value = result.res.data;
+                    showTodoLists.value.push(...result.res.data);
                 } else {
                     error.massage = result.error;
                     error.switch();
                 }
             });
-            if (showTodoLists.length < 10) $state.complete();
-            else {
+            if (count.value.length < 10) {
+                $state.complete();
+            } else {
                 $state.loaded();
             }
             page++;
         };
         let res = ref();
-        // 読み込みのタイミングで取得処理
-        onMounted(async () => {
-            // 取得処理
-            res = getTodoData(1);
-            // プロミスリザルト変換処理
-            res.then((result) => {
-                // エラーハンドリング
-                if (result.res) {
-                    showTodoLists.value = result.res.data;
-                } else {
-                    error.massage = result.error;
-                    error.switch();
-                }
-            });
-        });
 
         const format = (date) => {
             let created_at = dayjs(date).format("YYYY年MM月DD日");
@@ -122,7 +109,6 @@ export default defineComponent({
             getEditData,
             format,
             load,
-            comments,
             error,
         };
     },
