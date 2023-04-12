@@ -130,13 +130,14 @@ class Todo extends Model
     private function countReplacement($page)
     {
         $pages = [];
+        $page  = intval($page);
         if ($page == 1) {
             $pages['start'] = $page - 1;
             $pages['next']  = $page * 10;
         } else {
-            $math          = $page - 1;
-            $page['start'] = $math * 10;
-            $pages['next'] = $page * 10;
+            $math           = $page - 1;
+            $pages['start'] = $math * 10;
+            $pages['next']  = $page * 10;
         }
 
         return $pages;
