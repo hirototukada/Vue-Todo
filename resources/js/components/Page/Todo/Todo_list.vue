@@ -12,10 +12,11 @@
                 </div>
             </td>
             <td>{{ showTodoList.task }}</td>
-            <td>{{ showTodoList.content }}</td>
-            <td>{{ showTodoList.memo }}</td>
             <td>
                 {{ format(showTodoList.created_at) }}
+            </td>
+            <td class="link" @click="todo.switch(showTodoList)">
+                詳細はクリック
             </td>
             <td>
                 <p class="link" v-on:click="getEditData(showTodoList.id)">
@@ -35,6 +36,7 @@ import "v3-infinite-loading/lib/style.css";
 import dayjs from "dayjs";
 import { getTodoData } from "./Model/common";
 import { useErrorStore } from "../../../stores/error";
+import { useTodoStore } from "../../../stores/todo";
 
 dayjs.locale("ja");
 
@@ -44,11 +46,11 @@ export default defineComponent({
         const router = useRouter();
         const showTodoLists = ref([]);
         const error = useErrorStore();
+        const todo = useTodoStore();
 
         let count = ref(10);
         let page = 1;
         const load = async ($state) => {
-            console.log("loading...");
             // 取得処理
             res = getTodoData(page);
             // プロミスリザルト変換処理
@@ -57,6 +59,7 @@ export default defineComponent({
                 if (result.res) {
                     count.value = result.res.data;
                     showTodoLists.value.push(...result.res.data);
+                    console.log(showTodoLists);
                 } else {
                     error.massage = result.error;
                     error.switch();
@@ -106,6 +109,7 @@ export default defineComponent({
             format,
             load,
             error,
+            todo,
         };
     },
 });

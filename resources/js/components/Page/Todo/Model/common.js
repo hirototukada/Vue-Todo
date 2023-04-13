@@ -28,7 +28,6 @@ export async function getTodoData(page = 1) {
         res: "",
         error: "",
     };
-    console.log(page);
     let apiUrl = "/api/todo/" + page;
     if (page > 1) {
         apiUrl = "/api/todo/" + page;

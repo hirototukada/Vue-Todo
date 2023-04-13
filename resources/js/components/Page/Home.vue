@@ -1,11 +1,9 @@
 <template>
-    <!-- エラー表示 -->
     <transition name="fade">
-        <Modal
-            v-if="showContent"
-            :errorMsg="errorMsg"
-            v-on:close="closeModal()"
-        ></Modal>
+        <Content v-if="todo.show"></Content>
+    </transition>
+    <transition name="fade">
+        <Modal v-if="error.show"></Modal>
     </transition>
     <h1 class="text-center mt-3 mb-3">Todo</h1>
     <div class="input-group tableAll m-auto">
@@ -24,7 +22,7 @@
                 <tr>
                     <th scope="col">優先度</th>
                     <th scope="col">タスク</th>
-                    <th scope="col">詳細</th>
+                    <th scope="col">登録日</th>
                     <th scope="col">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -42,9 +40,8 @@
                                 d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
                             />
                         </svg>
-                        メモ
+                        詳細
                     </th>
-                    <th scope="col">登録日</th>
                     <th scope="col">編集</th>
                 </tr>
             </thead>
@@ -63,38 +60,25 @@
 <script>
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
-import Modal from "../Modal/Modal.vue";
 import Todo_list from "./Todo/Todo_list.vue";
+import Content from "../Modal/Content.vue";
+import Modal from "../Modal/Modal.vue";
+import { useTodoStore } from "../../stores/todo";
+import { useErrorStore } from "../../stores/error";
 
 export default {
     components: {
-        Modal,
         Todo_list,
+        Content,
+        Modal,
     },
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const todo = useTodoStore();
+        const error = useErrorStore();
 
-        //モーダルクリックチェック
-        let showContent = ref(false);
-        // エラーメッセージ格納
-        let errorMsg = ref();
-        // モーダルウィンドウを表示する.
-        let openModal = (errorText) => {
-            showContent.value = true;
-            errorMsg.value = errorText;
-        };
-        //  モーダルウィンドを閉じる.
-        let closeModal = () => {
-            showContent.value = false;
-        };
-
-        return {
-            showContent,
-            openModal,
-            closeModal,
-            errorMsg,
-        };
+        return { todo, error };
     },
 };
 </script>

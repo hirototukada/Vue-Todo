@@ -44,7 +44,6 @@ export default defineComponent({
             errors,
         };
     },
-    props: ["errorMsg"],
 });
 </script>
 
