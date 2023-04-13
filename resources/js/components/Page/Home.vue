@@ -8,7 +8,17 @@
         ></Modal>
     </transition>
     <h1 class="text-center mt-3 mb-3">Todo</h1>
-    <div class="m-auto tableAll">
+    <div class="input-group tableAll m-auto">
+        <input type="text" class="form-control" placeholder="フリー検索" />
+        <button
+            class="btn btn-outline-success ml-3"
+            type="button"
+            id="button-addon2"
+        >
+            <i class="fas fa-search"></i> 検索
+        </button>
+    </div>
+    <div class="m-auto tableAll mt-3">
         <table class="table">
             <thead>
                 <tr>
@@ -41,7 +51,7 @@
             <Todo_list></Todo_list>
         </table>
         <div class="text-right">
-            <router-link class="mr-3" to="/todoAdd">
+            <router-link class="mr-3 upper" to="/todoAdd">
                 <button type="button" class="mt-4 btn btn-primary">
                     タスクの追加
                 </button>
@@ -95,5 +105,15 @@ export default {
 .link {
     color: #007bff;
     cursor: pointer;
+}
+.upper {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    transition: 1s;
+    opacity: 0.7;
+}
+.upper:hover {
+    opacity: 1;
 }
 </style>
