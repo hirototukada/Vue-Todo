@@ -1,7 +1,4 @@
 <template>
-    <transition name="fade">
-        <Modal v-if="error.show"></Modal>
-    </transition>
     <h1 class="mt-5 text-center">タスク追加</h1>
     <div class="w-75 m-auto h-100">
         <form>
