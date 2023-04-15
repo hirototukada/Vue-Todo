@@ -1,6 +1,6 @@
 <template>
     <h1 class="mt-3 text-center">Todo編集</h1>
-    <div class="w-75 m-auto">
+    <div class="w-75 m-auto h-100">
         <form>
             <!-- タスク -->
             <div class="mb-3">
