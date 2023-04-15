@@ -5,17 +5,55 @@
     <transition name="fade">
         <Modal v-if="error.show"></Modal>
     </transition>
-    <h1 class="text-center mt-3 mb-3">Todo</h1>
-    <div class="input-group tableAll m-auto">
-        <input type="text" class="form-control" placeholder="フリー検索" />
-        <button
-            class="btn btn-outline-success ml-3"
-            type="button"
-            id="button-addon2"
-        >
-            <i class="fas fa-search"></i> 検索
-        </button>
+    <div class="mt-3 mb-5">
+        <div class="card border-success m-auto w-75">
+            <div class="card-header"><h1 class="text-center">Todo</h1></div>
+            <div class="card-body text-success">
+                <div class="form-group">
+                    <h5 class="card-title">検索</h5>
+                    <input
+                        type="text"
+                        class="form-control col-12"
+                        placeholder="フリー検索"
+                    />
+                </div>
+                <div class="form-group d-flex">
+                    <input
+                        type="text"
+                        class="form-control col-md-5 mr-4"
+                        placeholder="タスク"
+                    />
+                    <input
+                        type="text"
+                        class="form-control col-md-5"
+                        placeholder="詳細"
+                    />
+                </div>
+                <div class="form-group d-flex">
+                    <input
+                        type="text"
+                        class="form-control col-md-5 mr-4"
+                        placeholder="メモ"
+                    />
+                    <input
+                        type="text"
+                        class="form-control col-md-5"
+                        placeholder="詳細"
+                    />
+                </div>
+                <div class="text-right">
+                    <button
+                        class="btn btn-outline-success"
+                        type="button"
+                        id="button-addon2"
+                    >
+                        <i class="fas fa-search"></i> 検索
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="m-auto tableAll mt-3">
         <table class="table">
             <thead>

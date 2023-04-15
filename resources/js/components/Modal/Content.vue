@@ -1,17 +1,24 @@
 <template>
     <div
-        class="modal-background"
+        class="modal-background-content"
         v-if="todo.show == true"
         @click="todo.switch()"
     ></div>
-    <div class="modal-dialog" v-if="todo.show == true">
+    <div class="modal-dialog-content" v-if="todo.show == true">
         <div class="modal-content">
-            <div class="modal-header-todo">
-                <h6 class="modal-title text-light">
-                    {{ todo.task }}
-                </h6>
+            <div class="card" style="width: 24rem">
+                <div class="card-header">
+                    <h5 class="card-title">{{ todo.task }}</h5>
+                </div>
+                <div class="card-body">
+                    <p>・詳細</p>
+                    <p class="card-text">　　{{ todo.content }}</p>
+                </div>
+                <div class="card-body">
+                    <p>・メモ</p>
+                    <p class="card-text">　　{{ todo.memo }}</p>
+                </div>
             </div>
-            <div class="modal-content-text-todo">{{ todo.content }}</div>
         </div>
     </div>
 </template>
@@ -33,7 +40,7 @@ export default defineComponent({
 </script>
 
 <style>
-.modal-background {
+.modal-background-content {
     position: fixed;
     top: 0;
     left: 0;
@@ -44,9 +51,9 @@ export default defineComponent({
     pointer-events: auto;
 }
 
-.modal-dialog {
+.modal-dialog-content {
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 101;
