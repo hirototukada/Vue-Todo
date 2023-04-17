@@ -36,9 +36,17 @@
                         placeholder="メモ"
                     />
                     <input
-                        type="text"
-                        class="form-control col-md-5"
-                        placeholder="詳細"
+                        type="date"
+                        v-model="startData"
+                        :min="mindata"
+                        onkeydown="return false"
+                    />
+                    <p>　～　</p>
+                    <input
+                        type="date"
+                        v-model="endData"
+                        :min="mindata"
+                        onkeydown="return false"
                     />
                 </div>
                 <div class="text-right">
@@ -58,7 +66,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">優先度</th>
+                    <th scope="col"></th>
                     <th scope="col">タスク</th>
                     <th scope="col">登録日</th>
                     <th scope="col">
@@ -115,8 +123,16 @@ export default {
         const router = useRouter();
         const todo = useTodoStore();
         const error = useErrorStore();
+        let mindata = ref();
+        let year = new Date().getFullYear() - 5;
+        let now = new Date().toISOString().split("T")[0];
 
-        return { todo, error };
+        mindata = year + "-" + now.split("-")[1] + "-" + now.split("-")[2];
+
+        console.log(now.split("-"));
+        console.log(mindata);
+
+        return { todo, error, mindata };
     },
 };
 </script>
