@@ -22,12 +22,15 @@ class TodoController extends Controller
     /**
      * 取得処理
      *
+     * @param int $page
+     * @param int $userId
+     *
      * @return array
      */
-    public function index($page): array
+    public function index($page, $userId): array
     {
         // Todo取得処理
-        $todoParam = $this->todo->getData($page);
+        $todoParam = $this->todo->getData($page, $userId);
 
         return $todoParam;
     }
@@ -67,7 +70,6 @@ class TodoController extends Controller
      */
     public function todoEdit(TodoAddRequest $request)
     {
-        logger($request);
         // 登録処理
         $response = $this->todo->updateData($request);
 

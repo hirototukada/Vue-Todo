@@ -111,6 +111,7 @@ import Content from "../Modal/Content.vue";
 import Modal from "../Modal/Modal.vue";
 import { useTodoStore } from "../../stores/todo";
 import { useErrorStore } from "../../stores/error";
+import { useUserStore } from "../../stores/user";
 
 export default {
     components: {
@@ -123,6 +124,7 @@ export default {
         const router = useRouter();
         const todo = useTodoStore();
         const error = useErrorStore();
+
         let mindata = ref();
         let year = new Date().getFullYear() - 5;
         let now = new Date().toISOString().split("T")[0];

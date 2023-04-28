@@ -37,6 +37,7 @@ import dayjs from "dayjs";
 import { getTodoData } from "./Model/common";
 import { useErrorStore } from "../../../stores/error";
 import { useTodoStore } from "../../../stores/todo";
+import { useUserStore } from "../../../stores/user";
 
 dayjs.locale("ja");
 
@@ -47,12 +48,16 @@ export default defineComponent({
         const showTodoLists = ref([]);
         const error = useErrorStore();
         const todo = useTodoStore();
+        const user = useUserStore();
+
+        const route = useRoute();
+        const userEmail = route.query.email;
 
         let count = ref(10);
         let page = 1;
         const load = async ($state) => {
             // 取得処理
-            res = getTodoData(page);
+            res = getTodoData(page, user.id, userEmail);
             // プロミスリザルト変換処理
             res.then((result) => {
                 // エラーハンドリング
