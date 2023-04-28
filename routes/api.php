@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 // Todo取得
-Route::get('/todo/{page}', [TodoController::class, 'index']);
+Route::get('/todo/{page}/{userId}', [TodoController::class, 'index']);
 Route::get('/editSearch/{id}', [TodoController::class, 'searchEditData']);
 // todoインサート
 Route::post('/todoAdd', [TodoController::class, 'todoAdd']);

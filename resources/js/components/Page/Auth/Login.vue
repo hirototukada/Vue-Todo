@@ -99,7 +99,11 @@ export default {
             )
                 .then((userCredential) => {
                     userStore.getUserData(userCredential.user.email);
-                    router.push({ name: "Home", query: userCredential });
+                    let userEmail = userCredential.user.email;
+                    router.push({
+                        name: "Home",
+                        query: { email: userEmail },
+                    });
                 })
                 .catch((error) => {
                     const errorCode = error.code;

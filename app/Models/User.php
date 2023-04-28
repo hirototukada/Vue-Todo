@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Todo;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -39,6 +40,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function todo()
+    {
+        return $this->belongsTo(Todo::class);
+    }
+
     /**
      * The attributes that should be cast.
      *
@@ -47,6 +53,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     // パスワードハッシュ化用
     public function setPasswordAttribute($value)
     {
@@ -91,6 +98,8 @@ class User extends Authenticatable
     public function getData(string $email)
     {
         $userParam = User::where('email', $email)->first();
+        logger('emailからユーザー情報取得');
+        logger($userParam);
 
         return $userParam;
     }

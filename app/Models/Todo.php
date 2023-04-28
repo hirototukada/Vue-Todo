@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,20 +22,30 @@ class Todo extends Model
         'memo',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     /**
      * データ取得処理
      *
      * @return array $todoParam
      */
-    public function getData($page): array
+    public function getData($page, $userId): array
     {
         logger('取得処理始まり');
         logger($page);
 
+        $test   = Todo::find(3);
+        $sample = $test->user;
+        logger('取得');
+        logger($sample);
+
         $pages = $this->countReplacement($page);
 
         $todoParam = Todo::offset($pages['start'])->limit($pages['next'])->get()->toArray();
-        logger($todoParam);
+
         return $todoParam;
     }
 
@@ -61,7 +72,7 @@ class Todo extends Model
      */
     public function store($addTodoData)
     {
-        logger('test');
+
         try {
             DB::beginTransaction();
 
@@ -110,7 +121,6 @@ class Todo extends Model
      */
     public function deleteData(int $id)
     {
-        logger('削除処理スタート');
         try {
             DB::beginTransaction();
             Todo::where('id', $id)->delete();

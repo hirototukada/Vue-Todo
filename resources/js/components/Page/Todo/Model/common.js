@@ -23,15 +23,21 @@ export async function add(todoParam) {
 }
 
 // 取得処理
-export async function getTodoData(page = 1) {
+export async function getTodoData(page = 1, userId, userEmail = null) {
     let response = {
         res: "",
         error: "",
     };
-    let apiUrl = "/api/todo/" + page;
-    if (page > 1) {
-        apiUrl = "/api/todo/" + page;
+
+    if (!userId) {
+        userId = userEmail;
     }
+
+    let apiUrl = "/api/todo/" + page + "/" + userId;
+    if (page > 1) {
+        apiUrl = "/api/todo/" + page + "/" + userId;
+    }
+    console.log(apiUrl);
     await axios
         .get(apiUrl)
         .then((res) => {
